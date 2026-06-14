@@ -81,6 +81,7 @@ tokens = (
     'COMA',
     'DOS_PUNTOS',
     'FLECHA',
+    'PUNTO',
 )
 
 # ==========================================
@@ -136,51 +137,53 @@ def t_IDENTIFICADOR(t):
 
 # ==========================================
 # APORTE ENRIQUE ROSADO - INICIO
-    palabras_reservadas_enrique = {
+palabras_reservadas_enrique = {
     'void': 'VOID',
     'return': 'RETURN',
     'class': 'CLASS',
     'print': 'PRINT'
+
     }
 
 # Delimitadores y símbolos especiales
-    t_LLAVE_IZQ      = r'\{'
-    t_LLAVE_DER      = r'\}'
-    t_PARENTESIS_IZQ = r'\('
-    t_PARENTESIS_DER = r'\)'
-    t_CORCHETE_IZQ   = r'\['
-    t_CORCHETE_DER   = r'\]'
-    t_PUNTOYCOMA     = r';'
-    t_COMA           = r','
-    t_DOS_PUNTOS     = r':'
-    t_FLECHA         = r'=>'
+t_LLAVE_IZQ      = r'\{'
+t_LLAVE_DER      = r'\}'
+t_PARENTESIS_IZQ = r'\('
+t_PARENTESIS_DER = r'\)'
+t_CORCHETE_IZQ   = r'\['
+t_CORCHETE_DER   = r'\]'
+t_PUNTOYCOMA     = r';'
+t_COMA           = r','
+t_DOS_PUNTOS     = r':'
+t_FLECHA         = r'=>'
+t_PUNTO = r'\.'
 
 # Comentarios de una línea
-    def t_COMENTARIO_LINEA(t):
-        r'//.*'
-        pass
+def t_COMENTARIO_LINEA(t):
+    r'//.*'
+    pass
 
 # Comentarios multilínea
-    def t_COMENTARIO_BLOQUE(t):
-        r'/\*(.|\n)*?\*/'
-        t.lexer.lineno += t.value.count('\n')
-        pass
+def t_COMENTARIO_BLOQUE(t):
+    r'/\*(.|\n)*?\*/'
+    t.lexer.lineno += t.value.count('\n')
+    pass
 
 # Control de líneas
-    def t_newline(t):
-        r'\n+'
-        t.lexer.lineno += len(t.value)
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
 # Ignorar espacios y tabulaciones
-    t_ignore = ' \t'
+t_ignore = ' \t'
 
 # Manejo de errores léxicos
-    def t_error(t):
-        print(
-            f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' "
-            f"en línea {t.lineno}"
-        )
-        t.lexer.skip(1)
+def t_error(t):
+    print(
+        f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' "
+        f"en línea {t.lineno}"
+    )
+    t.lexer.skip(1)
 
 # AUTOR: Enrique Rosado
 # ==========================================
@@ -215,22 +218,13 @@ t_NOT          = r'!'
 t_INCREMENTO   = r'\+\+'
 t_DECREMENTO   = r'--'
 
-palabras_reservadas = {**palabras_reservadas_dome, **palabras_reservadas_henry}
-
-# Ignorar espacios y tabulaciones
-t_ignore = ' \t'
-
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += t.value.count('\n')
-
-def t_error(t):
-    # Reportar y omitir carácter ilegal
-    print(f"Caracter ilegal {t.value[0]!r} en linea {t.lineno}")
-    t.lexer.skip(1)
+palabras_reservadas = {
+    **palabras_reservadas_dome,
+    **palabras_reservadas_henry,
+    **palabras_reservadas_enrique
+}
 
 lexer = lex.lex()
-
 
 def analizar_archivo(ruta_archivo, nombre_desarrollador):
     with open(ruta_archivo, 'r', encoding='utf-8') as f:
