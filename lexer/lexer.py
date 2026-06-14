@@ -59,14 +59,29 @@ tokens = (
     'INCREMENTO',
     'DECREMENTO',
 
-)
+
 
     # ==========================================
     # APORTE ENRIQUE ROSADO
     # Funciones, clases, delimitadores
     # y manejo de impresión
     # ==========================================
+    'VOID',
+    'RETURN',
+    'CLASS',
+    'PRINT',
 
+    'LLAVE_IZQ',
+    'LLAVE_DER',
+    'PARENTESIS_IZQ',
+    'PARENTESIS_DER',
+    'CORCHETE_IZQ',
+    'CORCHETE_DER',
+    'PUNTOYCOMA',
+    'COMA',
+    'DOS_PUNTOS',
+    'FLECHA',
+)
 
 # ==========================================
 # APORTE DOMENIKA ARBOLEDA - INICIO
@@ -121,68 +136,52 @@ def t_IDENTIFICADOR(t):
 
 # ==========================================
 # APORTE ENRIQUE ROSADO - INICIO
-#
-# RESPONSABILIDAD:
-# Implementar el reconocimiento léxico de:
-#
-# 1. PALABRAS RESERVADAS RELACIONADAS CON
-#    FUNCIONES, CLASES Y SALIDA DE DATOS:
-#    - void
-#    - return
-#    - class
-#    - print
-#
-# 2. DELIMITADORES Y SÍMBOLOS ESPECIALES:
-#    - { }
-#    - ( )
-#    - [ ]
-#    - ;
-#    - ,
-#    - :
-#    - =>
-#
-# 3. MANEJO DE COMENTARIOS:
-#    - Comentarios de línea (//)
-#    - Comentarios de bloque (/* */)
-#
-# 4. CONTROL DE LÍNEAS:
-#    - Actualizar correctamente el contador
-#      de líneas del lexer.
-#
-# 5. MANEJO DE ESPACIOS Y TABULACIONES:
-#    - Ignorar espacios en blanco y tabuladores.
-#
-# 6. MANEJO DE ERRORES LÉXICOS:
-#    - Detectar caracteres inválidos.
-#    - Reportar línea del error.
-#    - Continuar el análisis después del error.
-#
-# TAREAS:
-# - Definir tokens para delimitadores.
-# - Implementar expresiones regulares para
-#   símbolos de agrupación y separación.
-# - Implementar reglas para comentarios.
-# - Implementar actualización de líneas.
-# - Implementar ignorado de espacios.
-# - Implementar función de manejo de errores.
-#
-# EJEMPLOS A VALIDAR:
-#
-# class Pelicula {
-#     void mostrar() {
-#         print("Hola");
-#     }
-# }
-#
-# // Comentario de línea
-#
-# /*
-#    Comentario
-#    multilínea
-# */
-#
-# List<String> nombres = ["A", "B"];
-#
+    palabras_reservadas_enrique = {
+    'void': 'VOID',
+    'return': 'RETURN',
+    'class': 'CLASS',
+    'print': 'PRINT'
+    }
+
+# Delimitadores y símbolos especiales
+    t_LLAVE_IZQ      = r'\{'
+    t_LLAVE_DER      = r'\}'
+    t_PARENTESIS_IZQ = r'\('
+    t_PARENTESIS_DER = r'\)'
+    t_CORCHETE_IZQ   = r'\['
+    t_CORCHETE_DER   = r'\]'
+    t_PUNTOYCOMA     = r';'
+    t_COMA           = r','
+    t_DOS_PUNTOS     = r':'
+    t_FLECHA         = r'=>'
+
+# Comentarios de una línea
+    def t_COMENTARIO_LINEA(t):
+        r'//.*'
+        pass
+
+# Comentarios multilínea
+    def t_COMENTARIO_BLOQUE(t):
+        r'/\*(.|\n)*?\*/'
+        t.lexer.lineno += t.value.count('\n')
+        pass
+
+# Control de líneas
+    def t_newline(t):
+        r'\n+'
+        t.lexer.lineno += len(t.value)
+
+# Ignorar espacios y tabulaciones
+    t_ignore = ' \t'
+
+# Manejo de errores léxicos
+    def t_error(t):
+        print(
+            f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' "
+            f"en línea {t.lineno}"
+        )
+        t.lexer.skip(1)
+
 # AUTOR: Enrique Rosado
 # ==========================================
 
