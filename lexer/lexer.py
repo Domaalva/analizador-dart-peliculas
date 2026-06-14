@@ -33,19 +33,40 @@ tokens = (
     'MULT_IGUAL',
     'DIV_IGUAL',
 
-    # ==========================================
-    # APORTE HENRY OLVERA
-    # Operadores relacionales, lógicos y
-    # estructuras de control
-    # ==========================================
+    # Aporte de Henry Olvera
+    # Operadores relacionales, lógicos y estructuras de control
 
+    'IF',
+    'ELSE',
+    'WHILE',
+    'FOR',
+    'SWITCH',
+    'CASE',
+    'DEFAULT',
+    'BREAK',
+    'CONTINUE',
 
+    'MAYOR',
+    'MENOR',
+    'MAYOR_IGUAL',
+    'MENOR_IGUAL',
+    'IGUAL_IGUAL',
+    'DISTINTO',
+
+    'AND',
+    'OR',
+    'NOT',
+    'INCREMENTO',
+    'DECREMENTO',
+
+)
 
     # ==========================================
     # APORTE ENRIQUE ROSADO
     # Funciones, clases, delimitadores
     # y manejo de impresión
     # ==========================================
+
 
 # ==========================================
 # APORTE DOMENIKA ARBOLEDA - INICIO
@@ -96,66 +117,6 @@ def t_IDENTIFICADOR(t):
 
 # ==========================================
 # APORTE DOMENIKA ARBOLEDA - FIN
-# ==========================================
-
-# ==========================================
-# APORTE HENRY OLVERA - INICIO
-#
-# RESPONSABILIDAD:
-# Implementar el reconocimiento léxico de:
-#
-# 1. ESTRUCTURAS DE CONTROL DE FLUJO:
-#    - if
-#    - else
-#    - while
-#    - for
-#    - switch
-#    - case
-#    - default
-#    - break
-#    - continue
-#
-# 2. OPERADORES RELACIONALES:
-#    - >
-#    - <
-#    - >=
-#    - <=
-#    - ==
-#    - !=
-#
-# 3. OPERADORES LÓGICOS:
-#    - &&
-#    - ||
-#    - !
-#
-# TAREAS:
-# - Definir los tokens correspondientes.
-# - Registrar las palabras reservadas de control.
-# - Implementar las expresiones regulares para
-#   operadores relacionales y lógicos.
-# - Validar que los tokens sean reconocidos
-#   correctamente durante el análisis léxico.
-# - Realizar pruebas utilizando estructuras
-#   condicionales y ciclos en archivos Dart.
-#
-# EJEMPLOS A VALIDAR:
-#
-# if (edad >= 18 && activo == true) {
-#     print("Acceso permitido");
-# }
-#
-# while (contador < 10) {
-#     contador++;
-# }
-#
-# switch(opcion) {
-#     case 1:
-#         break;
-#     default:
-#         break;
-# }
-#
-# AUTOR: Henry Olvera
 # ==========================================
 
 # ==========================================
@@ -226,7 +187,48 @@ def t_IDENTIFICADOR(t):
 # ==========================================
 
 # Combinación de las palabras reservadas de los tres aportes
-palabras_reservadas = {**palabras_reservadas_dome, **palabras_reservadas_henry, **palabras_reservadas_enrique}
+# Palabras reservadas del aporte de Henry
+palabras_reservadas_henry = {
+    'if'     : 'IF',
+    'else'   : 'ELSE',
+    'while'  : 'WHILE',
+    'for'    : 'FOR',
+    'switch' : 'SWITCH',
+    'case'   : 'CASE',
+    'default': 'DEFAULT',
+    'break'  : 'BREAK',
+    'continue': 'CONTINUE',
+}
+
+# Reglas léxicas (operadores relacionales y lógicos) - aporte Henry
+t_MAYOR_IGUAL = r'>='
+t_MENOR_IGUAL  = r'<='
+t_IGUAL_IGUAL  = r'=='
+t_DISTINTO      = r'!='
+t_MAYOR         = r'>'
+t_MENOR         = r'<'
+
+t_AND          = r'&&'
+t_OR           = r'\|\|'
+t_NOT          = r'!'
+
+# Incremento / decremento
+t_INCREMENTO   = r'\+\+'
+t_DECREMENTO   = r'--'
+
+palabras_reservadas = {**palabras_reservadas_dome, **palabras_reservadas_henry}
+
+# Ignorar espacios y tabulaciones
+t_ignore = ' \t'
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += t.value.count('\n')
+
+def t_error(t):
+    # Reportar y omitir carácter ilegal
+    print(f"Caracter ilegal {t.value[0]!r} en linea {t.lineno}")
+    t.lexer.skip(1)
 
 lexer = lex.lex()
 
@@ -246,20 +248,16 @@ def analizar_archivo(ruta_archivo, nombre_desarrollador):
     ruta_log = os.path.join('logs', nombre_log)
 
     with open(ruta_log, 'w', encoding='utf-8') as log:
-        log.write('=' * 60 + '\n')
         log.write('ANÁLISIS LÉXICO - ANALIZADOR DART\n')
         log.write(f'Desarrollador: {nombre_desarrollador}\n')
         log.write(f'Archivo analizado: {ruta_archivo}\n')
         log.write(f'Fecha y hora: {datetime.now().strftime("%d/%m/%Y %H:%M")}\n')
-        log.write('=' * 60 + '\n\n')
         log.write(f'TOKENS ENCONTRADOS: {len(tokens_encontrados)}\n\n')
 
         for tok in tokens_encontrados:
             log.write(f'[Línea {tok.lineno}] {tok.type:20} → {tok.value}\n')
-
-        log.write('\n' + '=' * 60 + '\n')
+        log.write('\n')
         log.write('ANÁLISIS COMPLETADO\n')
-        log.write('=' * 60 + '\n')
 
     print(f'\nLog generado: {nombre_log}')
     print(f'Total de tokens: {len(tokens_encontrados)}')

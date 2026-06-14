@@ -1,0 +1,193 @@
+ANÁLISIS LÉXICO - ANALIZADOR DART
+Desarrollador: HenryOlvera
+Archivo analizado: algoritmos/algoritmo_henry.dart
+Fecha y hora: 14/06/2026 11:17
+TOKENS ENCONTRADOS: 185
+
+[Línea 1] DIVISION             → /
+[Línea 1] DIVISION             → /
+[Línea 1] IDENTIFICADOR        → Algoritmo
+[Línea 1] IDENTIFICADOR        → de
+[Línea 1] IDENTIFICADOR        → prueba
+[Línea 1] MENOS                → -
+[Línea 1] IDENTIFICADOR        → Henry
+[Línea 1] IDENTIFICADOR        → Olvera
+[Línea 2] IDENTIFICADOR        → void
+[Línea 2] IDENTIFICADOR        → main
+[Línea 3] INT_TYPE             → int
+[Línea 3] IDENTIFICADOR        → edad
+[Línea 3] ASIGNACION           → =
+[Línea 3] ENTERO               → 20
+[Línea 4] BOOL_TYPE            → bool
+[Línea 4] IDENTIFICADOR        → activo
+[Línea 4] ASIGNACION           → =
+[Línea 4] TRUE                 → true
+[Línea 5] INT_TYPE             → int
+[Línea 5] IDENTIFICADOR        → contador
+[Línea 5] ASIGNACION           → =
+[Línea 5] ENTERO               → 0
+[Línea 6] INT_TYPE             → int
+[Línea 6] IDENTIFICADOR        → opcion
+[Línea 6] ASIGNACION           → =
+[Línea 6] ENTERO               → 1
+[Línea 8] IDENTIFICADOR        → print
+[Línea 8] CADENA               → 'Inicio - edad: $edad, activo: $activo, contador: $contador, opcion: $opcion'
+[Línea 10] DIVISION             → /
+[Línea 10] DIVISION             → /
+[Línea 10] IDENTIFICADOR        → Ejemplo
+[Línea 10] IF                   → if
+[Línea 10] IDENTIFICADOR        → con
+[Línea 10] IDENTIFICADOR        → operadores
+[Línea 10] IDENTIFICADOR        → relacionales
+[Línea 10] IDENTIFICADOR        → y
+[Línea 10] IDENTIFICADOR        → l
+[Línea 10] IDENTIFICADOR        → gicos
+[Línea 10] MAYOR_IGUAL          → >=
+[Línea 10] AND                  → &&
+[Línea 10] IGUAL_IGUAL          → ==
+[Línea 11] IF                   → if
+[Línea 11] IDENTIFICADOR        → edad
+[Línea 11] MAYOR_IGUAL          → >=
+[Línea 11] ENTERO               → 18
+[Línea 11] AND                  → &&
+[Línea 11] IDENTIFICADOR        → activo
+[Línea 11] IGUAL_IGUAL          → ==
+[Línea 11] TRUE                 → true
+[Línea 12] IDENTIFICADOR        → print
+[Línea 12] CADENA               → 'Acceso permitido'
+[Línea 13] ELSE                 → else
+[Línea 14] IDENTIFICADOR        → print
+[Línea 14] CADENA               → 'Acceso denegado'
+[Línea 17] DIVISION             → /
+[Línea 17] DIVISION             → /
+[Línea 17] IDENTIFICADOR        → Ejemplo
+[Línea 17] WHILE                → while
+[Línea 17] IDENTIFICADOR        → con
+[Línea 17] INCREMENTO           → ++
+[Línea 17] IDENTIFICADOR        → incremento
+[Línea 18] WHILE                → while
+[Línea 18] IDENTIFICADOR        → contador
+[Línea 18] MENOR                → <
+[Línea 18] ENTERO               → 3
+[Línea 19] IDENTIFICADOR        → contador
+[Línea 19] INCREMENTO           → ++
+[Línea 20] IDENTIFICADOR        → print
+[Línea 20] CADENA               → 'Dentro while, contador: $contador'
+[Línea 21] IF                   → if
+[Línea 21] IDENTIFICADOR        → contador
+[Línea 21] IGUAL_IGUAL          → ==
+[Línea 21] ENTERO               → 2
+[Línea 22] DIVISION             → /
+[Línea 22] DIVISION             → /
+[Línea 22] CONTINUE             → continue
+[Línea 22] IDENTIFICADOR        → para
+[Línea 22] IDENTIFICADOR        → saltar
+[Línea 22] IDENTIFICADOR        → al
+[Línea 22] IDENTIFICADOR        → siguiente
+[Línea 22] IDENTIFICADOR        → ciclo
+[Línea 23] IDENTIFICADOR        → contador
+[Línea 23] INCREMENTO           → ++
+[Línea 24] CONTINUE             → continue
+[Línea 28] IDENTIFICADOR        → print
+[Línea 28] CADENA               → 'Después del while, contador: $contador'
+[Línea 30] DIVISION             → /
+[Línea 30] DIVISION             → /
+[Línea 30] IDENTIFICADOR        → Ejemplo
+[Línea 30] IDENTIFICADOR        → decremento
+[Línea 30] DECREMENTO           → --
+[Línea 31] IDENTIFICADOR        → contador
+[Línea 31] DECREMENTO           → --
+[Línea 32] IDENTIFICADOR        → print
+[Línea 32] CADENA               → 'Después de --, contador: $contador'
+[Línea 34] DIVISION             → /
+[Línea 34] DIVISION             → /
+[Línea 34] IDENTIFICADOR        → Ejemplo
+[Línea 34] FOR                  → for
+[Línea 34] BREAK                → break
+[Línea 34] IDENTIFICADOR        → y
+[Línea 34] IDENTIFICADOR        → operadores
+[Línea 34] MENOR                → <
+[Línea 34] MAYOR                → >
+[Línea 35] FOR                  → for
+[Línea 35] INT_TYPE             → int
+[Línea 35] IDENTIFICADOR        → i
+[Línea 35] ASIGNACION           → =
+[Línea 35] ENTERO               → 0
+[Línea 35] IDENTIFICADOR        → i
+[Línea 35] MENOR                → <
+[Línea 35] ENTERO               → 5
+[Línea 35] IDENTIFICADOR        → i
+[Línea 35] INCREMENTO           → ++
+[Línea 36] IDENTIFICADOR        → print
+[Línea 36] CADENA               → 'for i = $i'
+[Línea 37] IF                   → if
+[Línea 37] IDENTIFICADOR        → i
+[Línea 37] MAYOR                → >
+[Línea 37] ENTERO               → 2
+[Línea 38] IDENTIFICADOR        → print
+[Línea 38] CADENA               → 'i mayor que 2, rompo el for'
+[Línea 39] BREAK                → break
+[Línea 43] DIVISION             → /
+[Línea 43] DIVISION             → /
+[Línea 43] IDENTIFICADOR        → Ejemplo
+[Línea 43] SWITCH               → switch
+[Línea 43] CASE                 → case
+[Línea 43] IDENTIFICADOR        → y
+[Línea 43] DEFAULT              → default
+[Línea 44] SWITCH               → switch
+[Línea 44] IDENTIFICADOR        → opcion
+[Línea 45] CASE                 → case
+[Línea 45] ENTERO               → 0
+[Línea 46] IDENTIFICADOR        → print
+[Línea 46] CADENA               → 'Opción 0'
+[Línea 47] BREAK                → break
+[Línea 48] CASE                 → case
+[Línea 48] ENTERO               → 1
+[Línea 49] IDENTIFICADOR        → print
+[Línea 49] CADENA               → 'Opción 1'
+[Línea 50] BREAK                → break
+[Línea 51] DEFAULT              → default
+[Línea 52] IDENTIFICADOR        → print
+[Línea 52] CADENA               → 'Opción por defecto'
+[Línea 53] BREAK                → break
+[Línea 56] DIVISION             → /
+[Línea 56] DIVISION             → /
+[Línea 56] IDENTIFICADOR        → Ejemplo
+[Línea 56] IDENTIFICADOR        → operadores
+[Línea 56] IDENTIFICADOR        → relacionales
+[Línea 56] IDENTIFICADOR        → y
+[Línea 56] IDENTIFICADOR        → l
+[Línea 56] IDENTIFICADOR        → gicos
+[Línea 56] IDENTIFICADOR        → adicionales
+[Línea 57] INT_TYPE             → int
+[Línea 57] IDENTIFICADOR        → a
+[Línea 57] ASIGNACION           → =
+[Línea 57] ENTERO               → 5
+[Línea 58] INT_TYPE             → int
+[Línea 58] IDENTIFICADOR        → b
+[Línea 58] ASIGNACION           → =
+[Línea 58] ENTERO               → 10
+[Línea 59] IF                   → if
+[Línea 59] IDENTIFICADOR        → a
+[Línea 59] MENOR                → <
+[Línea 59] IDENTIFICADOR        → b
+[Línea 59] OR                   → ||
+[Línea 59] IDENTIFICADOR        → a
+[Línea 59] IGUAL_IGUAL          → ==
+[Línea 59] IDENTIFICADOR        → b
+[Línea 60] IDENTIFICADOR        → print
+[Línea 60] CADENA               → 'a < b o a == b'
+[Línea 63] IF                   → if
+[Línea 63] NOT                  → !
+[Línea 63] IDENTIFICADOR        → a
+[Línea 63] DISTINTO             → !=
+[Línea 63] IDENTIFICADOR        → b
+[Línea 64] IDENTIFICADOR        → print
+[Línea 64] CADENA               → 'a es igual a b (negado)'
+[Línea 65] ELSE                 → else
+[Línea 66] IDENTIFICADOR        → print
+[Línea 66] CADENA               → 'a es distinto de b'
+[Línea 69] IDENTIFICADOR        → print
+[Línea 69] CADENA               → 'Fin del algoritmo de prueba'
+
+ANÁLISIS COMPLETADO
