@@ -1,0 +1,1569 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    CLASS
+    CONTINUE
+    DECREMENTO
+    DISTINTO
+    DIVISION
+    DIV_IGUAL
+    ELSE
+    FLECHA
+    FOR
+    IF
+    IGUAL_IGUAL
+    INCREMENTO
+    MAS
+    MAS_IGUAL
+    MAYOR_IGUAL
+    MENOR_IGUAL
+    MENOS
+    MENOS_IGUAL
+    MODULO
+    MULTIPLICACION
+    MULT_IGUAL
+    NOT
+    NULL
+    OR
+    PUNTO
+    WHILE
+
+Grammar
+
+Rule 0     S' -> programa
+Rule 1     programa -> elementos
+Rule 2     elementos -> elemento
+Rule 3     elementos -> elementos elemento
+Rule 4     elemento -> sentencia_print
+Rule 5     elemento -> funcion_void
+Rule 6     elemento -> funcion_return
+Rule 7     elemento -> declaracion_variable
+Rule 8     elemento -> estructura_switch
+Rule 9     elemento -> declaracion_map
+Rule 10    elemento -> funcion_opcional
+Rule 11    sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA
+Rule 12    funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+Rule 13    funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return
+Rule 14    bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER
+Rule 15    sentencia_return -> RETURN CADENA PUNTOYCOMA
+Rule 16    bloque -> LLAVE_IZQ LLAVE_DER
+Rule 17    tipo -> INT_TYPE
+Rule 18    tipo -> DOUBLE_TYPE
+Rule 19    tipo -> STRING_TYPE
+Rule 20    tipo -> BOOL_TYPE
+Rule 21    expresion -> ENTERO
+Rule 22    expresion -> DECIMAL
+Rule 23    expresion -> CADENA
+Rule 24    expresion -> TRUE
+Rule 25    expresion -> FALSE
+Rule 26    expresion -> IDENTIFICADOR
+Rule 27    declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+Rule 28    declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+Rule 29    declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+Rule 30    declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+Rule 31    estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER
+Rule 32    lista_casos -> caso
+Rule 33    lista_casos -> lista_casos caso
+Rule 34    lista_casos -> lista_casos caso_default
+Rule 35    lista_casos -> caso_default
+Rule 36    caso -> CASE expresion DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA
+Rule 37    caso_default -> DEFAULT DOS_PUNTOS sentencia_print
+Rule 38    declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+Rule 39    lista_pares -> par
+Rule 40    lista_pares -> lista_pares COMA par
+Rule 41    par -> CADENA DOS_PUNTOS expresion
+Rule 42    funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+Rule 43    lista_param_opcionales -> param_opcional
+Rule 44    lista_param_opcionales -> lista_param_opcionales COMA param_opcional
+Rule 45    param_opcional -> tipo IDENTIFICADOR ASIGNACION expresion
+
+Terminals, with rules where they appear
+
+AND                  : 
+ASIGNACION           : 27 28 29 30 38 45
+BOOL_TYPE            : 20
+BREAK                : 36
+CADENA               : 11 15 23 41
+CASE                 : 36
+CLASS                : 
+COMA                 : 38 40 42 44
+CONST                : 29
+CONTINUE             : 
+CORCHETE_DER         : 42
+CORCHETE_IZQ         : 42
+DECIMAL              : 22
+DECREMENTO           : 
+DEFAULT              : 37
+DISTINTO             : 
+DIVISION             : 
+DIV_IGUAL            : 
+DOS_PUNTOS           : 36 37 41
+DOUBLE_TYPE          : 18
+ELSE                 : 
+ENTERO               : 21
+FALSE                : 25
+FINAL                : 30
+FLECHA               : 
+FOR                  : 
+IDENTIFICADOR        : 12 13 26 27 28 29 30 31 38 38 38 42 42 45
+IF                   : 
+IGUAL_IGUAL          : 
+INCREMENTO           : 
+INT_TYPE             : 17
+LLAVE_DER            : 14 16 31 38
+LLAVE_IZQ            : 14 16 31 38
+MAS                  : 
+MAS_IGUAL            : 
+MAYOR                : 38
+MAYOR_IGUAL          : 
+MENOR                : 38
+MENOR_IGUAL          : 
+MENOS                : 
+MENOS_IGUAL          : 
+MODULO               : 
+MULTIPLICACION       : 
+MULT_IGUAL           : 
+NOT                  : 
+NULL                 : 
+OR                   : 
+PARENTESIS_DER       : 11 12 13 31 42
+PARENTESIS_IZQ       : 11 12 13 31 42
+PRINT                : 11
+PUNTO                : 
+PUNTOYCOMA           : 11 15 27 28 29 30 36 38
+RETURN               : 15
+STRING_TYPE          : 13 19
+SWITCH               : 31
+TRUE                 : 24
+VAR                  : 28
+VOID                 : 12 42
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+bloque               : 12 42
+bloque_return        : 13
+caso                 : 32 33
+caso_default         : 34 35
+declaracion_map      : 9
+declaracion_variable : 7
+elemento             : 2 3
+elementos            : 1 3
+estructura_switch    : 8
+expresion            : 27 28 29 30 36 41 45
+funcion_opcional     : 10
+funcion_return       : 6
+funcion_void         : 5
+lista_casos          : 31 33 34
+lista_param_opcionales : 42 44
+lista_pares          : 38 40
+par                  : 39 40
+param_opcional       : 43 44
+programa             : 0
+sentencia_print      : 4 36 37
+sentencia_return     : 14
+tipo                 : 27 29 30 38 42 45
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programa
+    (1) programa -> . elementos
+    (2) elementos -> . elemento
+    (3) elementos -> . elementos elemento
+    (4) elemento -> . sentencia_print
+    (5) elemento -> . funcion_void
+    (6) elemento -> . funcion_return
+    (7) elemento -> . declaracion_variable
+    (8) elemento -> . estructura_switch
+    (9) elemento -> . declaracion_map
+    (10) elemento -> . funcion_opcional
+    (11) sentencia_print -> . PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA
+    (12) funcion_void -> . VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+    (13) funcion_return -> . STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return
+    (27) declaracion_variable -> . tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (28) declaracion_variable -> . VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (29) declaracion_variable -> . CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (30) declaracion_variable -> . FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (31) estructura_switch -> . SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER
+    (38) declaracion_map -> . IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+    (42) funcion_opcional -> . VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+    (17) tipo -> . INT_TYPE
+    (18) tipo -> . DOUBLE_TYPE
+    (19) tipo -> . STRING_TYPE
+    (20) tipo -> . BOOL_TYPE
+
+    PRINT           shift and go to state 11
+    VOID            shift and go to state 12
+    STRING_TYPE     shift and go to state 14
+    VAR             shift and go to state 16
+    CONST           shift and go to state 17
+    FINAL           shift and go to state 18
+    SWITCH          shift and go to state 19
+    IDENTIFICADOR   shift and go to state 13
+    INT_TYPE        shift and go to state 20
+    DOUBLE_TYPE     shift and go to state 21
+    BOOL_TYPE       shift and go to state 22
+
+    programa                       shift and go to state 1
+    elementos                      shift and go to state 2
+    elemento                       shift and go to state 3
+    sentencia_print                shift and go to state 4
+    funcion_void                   shift and go to state 5
+    funcion_return                 shift and go to state 6
+    declaracion_variable           shift and go to state 7
+    estructura_switch              shift and go to state 8
+    declaracion_map                shift and go to state 9
+    funcion_opcional               shift and go to state 10
+    tipo                           shift and go to state 15
+
+state 1
+
+    (0) S' -> programa .
+
+
+
+state 2
+
+    (1) programa -> elementos .
+    (3) elementos -> elementos . elemento
+    (4) elemento -> . sentencia_print
+    (5) elemento -> . funcion_void
+    (6) elemento -> . funcion_return
+    (7) elemento -> . declaracion_variable
+    (8) elemento -> . estructura_switch
+    (9) elemento -> . declaracion_map
+    (10) elemento -> . funcion_opcional
+    (11) sentencia_print -> . PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA
+    (12) funcion_void -> . VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+    (13) funcion_return -> . STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return
+    (27) declaracion_variable -> . tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (28) declaracion_variable -> . VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (29) declaracion_variable -> . CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (30) declaracion_variable -> . FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (31) estructura_switch -> . SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER
+    (38) declaracion_map -> . IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+    (42) funcion_opcional -> . VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+    (17) tipo -> . INT_TYPE
+    (18) tipo -> . DOUBLE_TYPE
+    (19) tipo -> . STRING_TYPE
+    (20) tipo -> . BOOL_TYPE
+
+    $end            reduce using rule 1 (programa -> elementos .)
+    PRINT           shift and go to state 11
+    VOID            shift and go to state 12
+    STRING_TYPE     shift and go to state 14
+    VAR             shift and go to state 16
+    CONST           shift and go to state 17
+    FINAL           shift and go to state 18
+    SWITCH          shift and go to state 19
+    IDENTIFICADOR   shift and go to state 13
+    INT_TYPE        shift and go to state 20
+    DOUBLE_TYPE     shift and go to state 21
+    BOOL_TYPE       shift and go to state 22
+
+    elemento                       shift and go to state 23
+    sentencia_print                shift and go to state 4
+    funcion_void                   shift and go to state 5
+    funcion_return                 shift and go to state 6
+    declaracion_variable           shift and go to state 7
+    estructura_switch              shift and go to state 8
+    declaracion_map                shift and go to state 9
+    funcion_opcional               shift and go to state 10
+    tipo                           shift and go to state 15
+
+state 3
+
+    (2) elementos -> elemento .
+
+    PRINT           reduce using rule 2 (elementos -> elemento .)
+    VOID            reduce using rule 2 (elementos -> elemento .)
+    STRING_TYPE     reduce using rule 2 (elementos -> elemento .)
+    VAR             reduce using rule 2 (elementos -> elemento .)
+    CONST           reduce using rule 2 (elementos -> elemento .)
+    FINAL           reduce using rule 2 (elementos -> elemento .)
+    SWITCH          reduce using rule 2 (elementos -> elemento .)
+    IDENTIFICADOR   reduce using rule 2 (elementos -> elemento .)
+    INT_TYPE        reduce using rule 2 (elementos -> elemento .)
+    DOUBLE_TYPE     reduce using rule 2 (elementos -> elemento .)
+    BOOL_TYPE       reduce using rule 2 (elementos -> elemento .)
+    $end            reduce using rule 2 (elementos -> elemento .)
+
+
+state 4
+
+    (4) elemento -> sentencia_print .
+
+    PRINT           reduce using rule 4 (elemento -> sentencia_print .)
+    VOID            reduce using rule 4 (elemento -> sentencia_print .)
+    STRING_TYPE     reduce using rule 4 (elemento -> sentencia_print .)
+    VAR             reduce using rule 4 (elemento -> sentencia_print .)
+    CONST           reduce using rule 4 (elemento -> sentencia_print .)
+    FINAL           reduce using rule 4 (elemento -> sentencia_print .)
+    SWITCH          reduce using rule 4 (elemento -> sentencia_print .)
+    IDENTIFICADOR   reduce using rule 4 (elemento -> sentencia_print .)
+    INT_TYPE        reduce using rule 4 (elemento -> sentencia_print .)
+    DOUBLE_TYPE     reduce using rule 4 (elemento -> sentencia_print .)
+    BOOL_TYPE       reduce using rule 4 (elemento -> sentencia_print .)
+    $end            reduce using rule 4 (elemento -> sentencia_print .)
+
+
+state 5
+
+    (5) elemento -> funcion_void .
+
+    PRINT           reduce using rule 5 (elemento -> funcion_void .)
+    VOID            reduce using rule 5 (elemento -> funcion_void .)
+    STRING_TYPE     reduce using rule 5 (elemento -> funcion_void .)
+    VAR             reduce using rule 5 (elemento -> funcion_void .)
+    CONST           reduce using rule 5 (elemento -> funcion_void .)
+    FINAL           reduce using rule 5 (elemento -> funcion_void .)
+    SWITCH          reduce using rule 5 (elemento -> funcion_void .)
+    IDENTIFICADOR   reduce using rule 5 (elemento -> funcion_void .)
+    INT_TYPE        reduce using rule 5 (elemento -> funcion_void .)
+    DOUBLE_TYPE     reduce using rule 5 (elemento -> funcion_void .)
+    BOOL_TYPE       reduce using rule 5 (elemento -> funcion_void .)
+    $end            reduce using rule 5 (elemento -> funcion_void .)
+
+
+state 6
+
+    (6) elemento -> funcion_return .
+
+    PRINT           reduce using rule 6 (elemento -> funcion_return .)
+    VOID            reduce using rule 6 (elemento -> funcion_return .)
+    STRING_TYPE     reduce using rule 6 (elemento -> funcion_return .)
+    VAR             reduce using rule 6 (elemento -> funcion_return .)
+    CONST           reduce using rule 6 (elemento -> funcion_return .)
+    FINAL           reduce using rule 6 (elemento -> funcion_return .)
+    SWITCH          reduce using rule 6 (elemento -> funcion_return .)
+    IDENTIFICADOR   reduce using rule 6 (elemento -> funcion_return .)
+    INT_TYPE        reduce using rule 6 (elemento -> funcion_return .)
+    DOUBLE_TYPE     reduce using rule 6 (elemento -> funcion_return .)
+    BOOL_TYPE       reduce using rule 6 (elemento -> funcion_return .)
+    $end            reduce using rule 6 (elemento -> funcion_return .)
+
+
+state 7
+
+    (7) elemento -> declaracion_variable .
+
+    PRINT           reduce using rule 7 (elemento -> declaracion_variable .)
+    VOID            reduce using rule 7 (elemento -> declaracion_variable .)
+    STRING_TYPE     reduce using rule 7 (elemento -> declaracion_variable .)
+    VAR             reduce using rule 7 (elemento -> declaracion_variable .)
+    CONST           reduce using rule 7 (elemento -> declaracion_variable .)
+    FINAL           reduce using rule 7 (elemento -> declaracion_variable .)
+    SWITCH          reduce using rule 7 (elemento -> declaracion_variable .)
+    IDENTIFICADOR   reduce using rule 7 (elemento -> declaracion_variable .)
+    INT_TYPE        reduce using rule 7 (elemento -> declaracion_variable .)
+    DOUBLE_TYPE     reduce using rule 7 (elemento -> declaracion_variable .)
+    BOOL_TYPE       reduce using rule 7 (elemento -> declaracion_variable .)
+    $end            reduce using rule 7 (elemento -> declaracion_variable .)
+
+
+state 8
+
+    (8) elemento -> estructura_switch .
+
+    PRINT           reduce using rule 8 (elemento -> estructura_switch .)
+    VOID            reduce using rule 8 (elemento -> estructura_switch .)
+    STRING_TYPE     reduce using rule 8 (elemento -> estructura_switch .)
+    VAR             reduce using rule 8 (elemento -> estructura_switch .)
+    CONST           reduce using rule 8 (elemento -> estructura_switch .)
+    FINAL           reduce using rule 8 (elemento -> estructura_switch .)
+    SWITCH          reduce using rule 8 (elemento -> estructura_switch .)
+    IDENTIFICADOR   reduce using rule 8 (elemento -> estructura_switch .)
+    INT_TYPE        reduce using rule 8 (elemento -> estructura_switch .)
+    DOUBLE_TYPE     reduce using rule 8 (elemento -> estructura_switch .)
+    BOOL_TYPE       reduce using rule 8 (elemento -> estructura_switch .)
+    $end            reduce using rule 8 (elemento -> estructura_switch .)
+
+
+state 9
+
+    (9) elemento -> declaracion_map .
+
+    PRINT           reduce using rule 9 (elemento -> declaracion_map .)
+    VOID            reduce using rule 9 (elemento -> declaracion_map .)
+    STRING_TYPE     reduce using rule 9 (elemento -> declaracion_map .)
+    VAR             reduce using rule 9 (elemento -> declaracion_map .)
+    CONST           reduce using rule 9 (elemento -> declaracion_map .)
+    FINAL           reduce using rule 9 (elemento -> declaracion_map .)
+    SWITCH          reduce using rule 9 (elemento -> declaracion_map .)
+    IDENTIFICADOR   reduce using rule 9 (elemento -> declaracion_map .)
+    INT_TYPE        reduce using rule 9 (elemento -> declaracion_map .)
+    DOUBLE_TYPE     reduce using rule 9 (elemento -> declaracion_map .)
+    BOOL_TYPE       reduce using rule 9 (elemento -> declaracion_map .)
+    $end            reduce using rule 9 (elemento -> declaracion_map .)
+
+
+state 10
+
+    (10) elemento -> funcion_opcional .
+
+    PRINT           reduce using rule 10 (elemento -> funcion_opcional .)
+    VOID            reduce using rule 10 (elemento -> funcion_opcional .)
+    STRING_TYPE     reduce using rule 10 (elemento -> funcion_opcional .)
+    VAR             reduce using rule 10 (elemento -> funcion_opcional .)
+    CONST           reduce using rule 10 (elemento -> funcion_opcional .)
+    FINAL           reduce using rule 10 (elemento -> funcion_opcional .)
+    SWITCH          reduce using rule 10 (elemento -> funcion_opcional .)
+    IDENTIFICADOR   reduce using rule 10 (elemento -> funcion_opcional .)
+    INT_TYPE        reduce using rule 10 (elemento -> funcion_opcional .)
+    DOUBLE_TYPE     reduce using rule 10 (elemento -> funcion_opcional .)
+    BOOL_TYPE       reduce using rule 10 (elemento -> funcion_opcional .)
+    $end            reduce using rule 10 (elemento -> funcion_opcional .)
+
+
+state 11
+
+    (11) sentencia_print -> PRINT . PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA
+
+    PARENTESIS_IZQ  shift and go to state 24
+
+
+state 12
+
+    (12) funcion_void -> VOID . IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+    (42) funcion_opcional -> VOID . IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+
+    IDENTIFICADOR   shift and go to state 25
+
+
+state 13
+
+    (38) declaracion_map -> IDENTIFICADOR . MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+
+    MENOR           shift and go to state 26
+
+
+state 14
+
+    (13) funcion_return -> STRING_TYPE . IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return
+    (19) tipo -> STRING_TYPE .
+
+  ! shift/reduce conflict for IDENTIFICADOR resolved as shift
+    IDENTIFICADOR   shift and go to state 27
+
+  ! IDENTIFICADOR   [ reduce using rule 19 (tipo -> STRING_TYPE .) ]
+
+
+state 15
+
+    (27) declaracion_variable -> tipo . IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+
+    IDENTIFICADOR   shift and go to state 28
+
+
+state 16
+
+    (28) declaracion_variable -> VAR . IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+
+    IDENTIFICADOR   shift and go to state 29
+
+
+state 17
+
+    (29) declaracion_variable -> CONST . tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (17) tipo -> . INT_TYPE
+    (18) tipo -> . DOUBLE_TYPE
+    (19) tipo -> . STRING_TYPE
+    (20) tipo -> . BOOL_TYPE
+
+    INT_TYPE        shift and go to state 20
+    DOUBLE_TYPE     shift and go to state 21
+    STRING_TYPE     shift and go to state 31
+    BOOL_TYPE       shift and go to state 22
+
+    tipo                           shift and go to state 30
+
+state 18
+
+    (30) declaracion_variable -> FINAL . tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    (17) tipo -> . INT_TYPE
+    (18) tipo -> . DOUBLE_TYPE
+    (19) tipo -> . STRING_TYPE
+    (20) tipo -> . BOOL_TYPE
+
+    INT_TYPE        shift and go to state 20
+    DOUBLE_TYPE     shift and go to state 21
+    STRING_TYPE     shift and go to state 31
+    BOOL_TYPE       shift and go to state 22
+
+    tipo                           shift and go to state 32
+
+state 19
+
+    (31) estructura_switch -> SWITCH . PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER
+
+    PARENTESIS_IZQ  shift and go to state 33
+
+
+state 20
+
+    (17) tipo -> INT_TYPE .
+
+    IDENTIFICADOR   reduce using rule 17 (tipo -> INT_TYPE .)
+    COMA            reduce using rule 17 (tipo -> INT_TYPE .)
+
+
+state 21
+
+    (18) tipo -> DOUBLE_TYPE .
+
+    IDENTIFICADOR   reduce using rule 18 (tipo -> DOUBLE_TYPE .)
+    COMA            reduce using rule 18 (tipo -> DOUBLE_TYPE .)
+
+
+state 22
+
+    (20) tipo -> BOOL_TYPE .
+
+    IDENTIFICADOR   reduce using rule 20 (tipo -> BOOL_TYPE .)
+    COMA            reduce using rule 20 (tipo -> BOOL_TYPE .)
+
+
+state 23
+
+    (3) elementos -> elementos elemento .
+
+    PRINT           reduce using rule 3 (elementos -> elementos elemento .)
+    VOID            reduce using rule 3 (elementos -> elementos elemento .)
+    STRING_TYPE     reduce using rule 3 (elementos -> elementos elemento .)
+    VAR             reduce using rule 3 (elementos -> elementos elemento .)
+    CONST           reduce using rule 3 (elementos -> elementos elemento .)
+    FINAL           reduce using rule 3 (elementos -> elementos elemento .)
+    SWITCH          reduce using rule 3 (elementos -> elementos elemento .)
+    IDENTIFICADOR   reduce using rule 3 (elementos -> elementos elemento .)
+    INT_TYPE        reduce using rule 3 (elementos -> elementos elemento .)
+    DOUBLE_TYPE     reduce using rule 3 (elementos -> elementos elemento .)
+    BOOL_TYPE       reduce using rule 3 (elementos -> elementos elemento .)
+    $end            reduce using rule 3 (elementos -> elementos elemento .)
+
+
+state 24
+
+    (11) sentencia_print -> PRINT PARENTESIS_IZQ . CADENA PARENTESIS_DER PUNTOYCOMA
+
+    CADENA          shift and go to state 34
+
+
+state 25
+
+    (12) funcion_void -> VOID IDENTIFICADOR . PARENTESIS_IZQ PARENTESIS_DER bloque
+    (42) funcion_opcional -> VOID IDENTIFICADOR . PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+
+    PARENTESIS_IZQ  shift and go to state 35
+
+
+state 26
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR . tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+    (17) tipo -> . INT_TYPE
+    (18) tipo -> . DOUBLE_TYPE
+    (19) tipo -> . STRING_TYPE
+    (20) tipo -> . BOOL_TYPE
+
+    INT_TYPE        shift and go to state 20
+    DOUBLE_TYPE     shift and go to state 21
+    STRING_TYPE     shift and go to state 31
+    BOOL_TYPE       shift and go to state 22
+
+    tipo                           shift and go to state 36
+
+state 27
+
+    (13) funcion_return -> STRING_TYPE IDENTIFICADOR . PARENTESIS_IZQ PARENTESIS_DER bloque_return
+
+    PARENTESIS_IZQ  shift and go to state 37
+
+
+state 28
+
+    (27) declaracion_variable -> tipo IDENTIFICADOR . ASIGNACION expresion PUNTOYCOMA
+
+    ASIGNACION      shift and go to state 38
+
+
+state 29
+
+    (28) declaracion_variable -> VAR IDENTIFICADOR . ASIGNACION expresion PUNTOYCOMA
+
+    ASIGNACION      shift and go to state 39
+
+
+state 30
+
+    (29) declaracion_variable -> CONST tipo . IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+
+    IDENTIFICADOR   shift and go to state 40
+
+
+state 31
+
+    (19) tipo -> STRING_TYPE .
+
+    IDENTIFICADOR   reduce using rule 19 (tipo -> STRING_TYPE .)
+    COMA            reduce using rule 19 (tipo -> STRING_TYPE .)
+
+
+state 32
+
+    (30) declaracion_variable -> FINAL tipo . IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+
+    IDENTIFICADOR   shift and go to state 41
+
+
+state 33
+
+    (31) estructura_switch -> SWITCH PARENTESIS_IZQ . IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER
+
+    IDENTIFICADOR   shift and go to state 42
+
+
+state 34
+
+    (11) sentencia_print -> PRINT PARENTESIS_IZQ CADENA . PARENTESIS_DER PUNTOYCOMA
+
+    PARENTESIS_DER  shift and go to state 43
+
+
+state 35
+
+    (12) funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ . PARENTESIS_DER bloque
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ . tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+    (17) tipo -> . INT_TYPE
+    (18) tipo -> . DOUBLE_TYPE
+    (19) tipo -> . STRING_TYPE
+    (20) tipo -> . BOOL_TYPE
+
+    PARENTESIS_DER  shift and go to state 44
+    INT_TYPE        shift and go to state 20
+    DOUBLE_TYPE     shift and go to state 21
+    STRING_TYPE     shift and go to state 31
+    BOOL_TYPE       shift and go to state 22
+
+    tipo                           shift and go to state 45
+
+state 36
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo . COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+
+    COMA            shift and go to state 46
+
+
+state 37
+
+    (13) funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ . PARENTESIS_DER bloque_return
+
+    PARENTESIS_DER  shift and go to state 47
+
+
+state 38
+
+    (27) declaracion_variable -> tipo IDENTIFICADOR ASIGNACION . expresion PUNTOYCOMA
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . CADENA
+    (24) expresion -> . TRUE
+    (25) expresion -> . FALSE
+    (26) expresion -> . IDENTIFICADOR
+
+    ENTERO          shift and go to state 50
+    DECIMAL         shift and go to state 51
+    CADENA          shift and go to state 52
+    TRUE            shift and go to state 53
+    FALSE           shift and go to state 54
+    IDENTIFICADOR   shift and go to state 48
+
+    expresion                      shift and go to state 49
+
+state 39
+
+    (28) declaracion_variable -> VAR IDENTIFICADOR ASIGNACION . expresion PUNTOYCOMA
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . CADENA
+    (24) expresion -> . TRUE
+    (25) expresion -> . FALSE
+    (26) expresion -> . IDENTIFICADOR
+
+    ENTERO          shift and go to state 50
+    DECIMAL         shift and go to state 51
+    CADENA          shift and go to state 52
+    TRUE            shift and go to state 53
+    FALSE           shift and go to state 54
+    IDENTIFICADOR   shift and go to state 48
+
+    expresion                      shift and go to state 55
+
+state 40
+
+    (29) declaracion_variable -> CONST tipo IDENTIFICADOR . ASIGNACION expresion PUNTOYCOMA
+
+    ASIGNACION      shift and go to state 56
+
+
+state 41
+
+    (30) declaracion_variable -> FINAL tipo IDENTIFICADOR . ASIGNACION expresion PUNTOYCOMA
+
+    ASIGNACION      shift and go to state 57
+
+
+state 42
+
+    (31) estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR . PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER
+
+    PARENTESIS_DER  shift and go to state 58
+
+
+state 43
+
+    (11) sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 59
+
+
+state 44
+
+    (12) funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER . bloque
+    (16) bloque -> . LLAVE_IZQ LLAVE_DER
+
+    LLAVE_IZQ       shift and go to state 61
+
+    bloque                         shift and go to state 60
+
+state 45
+
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo . IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+
+    IDENTIFICADOR   shift and go to state 62
+
+
+state 46
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA . IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+
+    IDENTIFICADOR   shift and go to state 63
+
+
+state 47
+
+    (13) funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER . bloque_return
+    (14) bloque_return -> . LLAVE_IZQ sentencia_return LLAVE_DER
+
+    LLAVE_IZQ       shift and go to state 65
+
+    bloque_return                  shift and go to state 64
+
+state 48
+
+    (26) expresion -> IDENTIFICADOR .
+
+    PUNTOYCOMA      reduce using rule 26 (expresion -> IDENTIFICADOR .)
+    DOS_PUNTOS      reduce using rule 26 (expresion -> IDENTIFICADOR .)
+    CORCHETE_DER    reduce using rule 26 (expresion -> IDENTIFICADOR .)
+    COMA            reduce using rule 26 (expresion -> IDENTIFICADOR .)
+    LLAVE_DER       reduce using rule 26 (expresion -> IDENTIFICADOR .)
+
+
+state 49
+
+    (27) declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 66
+
+
+state 50
+
+    (21) expresion -> ENTERO .
+
+    PUNTOYCOMA      reduce using rule 21 (expresion -> ENTERO .)
+    DOS_PUNTOS      reduce using rule 21 (expresion -> ENTERO .)
+    CORCHETE_DER    reduce using rule 21 (expresion -> ENTERO .)
+    COMA            reduce using rule 21 (expresion -> ENTERO .)
+    LLAVE_DER       reduce using rule 21 (expresion -> ENTERO .)
+
+
+state 51
+
+    (22) expresion -> DECIMAL .
+
+    PUNTOYCOMA      reduce using rule 22 (expresion -> DECIMAL .)
+    DOS_PUNTOS      reduce using rule 22 (expresion -> DECIMAL .)
+    CORCHETE_DER    reduce using rule 22 (expresion -> DECIMAL .)
+    COMA            reduce using rule 22 (expresion -> DECIMAL .)
+    LLAVE_DER       reduce using rule 22 (expresion -> DECIMAL .)
+
+
+state 52
+
+    (23) expresion -> CADENA .
+
+    PUNTOYCOMA      reduce using rule 23 (expresion -> CADENA .)
+    DOS_PUNTOS      reduce using rule 23 (expresion -> CADENA .)
+    CORCHETE_DER    reduce using rule 23 (expresion -> CADENA .)
+    COMA            reduce using rule 23 (expresion -> CADENA .)
+    LLAVE_DER       reduce using rule 23 (expresion -> CADENA .)
+
+
+state 53
+
+    (24) expresion -> TRUE .
+
+    PUNTOYCOMA      reduce using rule 24 (expresion -> TRUE .)
+    DOS_PUNTOS      reduce using rule 24 (expresion -> TRUE .)
+    CORCHETE_DER    reduce using rule 24 (expresion -> TRUE .)
+    COMA            reduce using rule 24 (expresion -> TRUE .)
+    LLAVE_DER       reduce using rule 24 (expresion -> TRUE .)
+
+
+state 54
+
+    (25) expresion -> FALSE .
+
+    PUNTOYCOMA      reduce using rule 25 (expresion -> FALSE .)
+    DOS_PUNTOS      reduce using rule 25 (expresion -> FALSE .)
+    CORCHETE_DER    reduce using rule 25 (expresion -> FALSE .)
+    COMA            reduce using rule 25 (expresion -> FALSE .)
+    LLAVE_DER       reduce using rule 25 (expresion -> FALSE .)
+
+
+state 55
+
+    (28) declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 67
+
+
+state 56
+
+    (29) declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION . expresion PUNTOYCOMA
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . CADENA
+    (24) expresion -> . TRUE
+    (25) expresion -> . FALSE
+    (26) expresion -> . IDENTIFICADOR
+
+    ENTERO          shift and go to state 50
+    DECIMAL         shift and go to state 51
+    CADENA          shift and go to state 52
+    TRUE            shift and go to state 53
+    FALSE           shift and go to state 54
+    IDENTIFICADOR   shift and go to state 48
+
+    expresion                      shift and go to state 68
+
+state 57
+
+    (30) declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION . expresion PUNTOYCOMA
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . CADENA
+    (24) expresion -> . TRUE
+    (25) expresion -> . FALSE
+    (26) expresion -> . IDENTIFICADOR
+
+    ENTERO          shift and go to state 50
+    DECIMAL         shift and go to state 51
+    CADENA          shift and go to state 52
+    TRUE            shift and go to state 53
+    FALSE           shift and go to state 54
+    IDENTIFICADOR   shift and go to state 48
+
+    expresion                      shift and go to state 69
+
+state 58
+
+    (31) estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER . LLAVE_IZQ lista_casos LLAVE_DER
+
+    LLAVE_IZQ       shift and go to state 70
+
+
+state 59
+
+    (11) sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .
+
+    PRINT           reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    VOID            reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    STRING_TYPE     reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    VAR             reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    CONST           reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    FINAL           reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    SWITCH          reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    IDENTIFICADOR   reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    INT_TYPE        reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    DOUBLE_TYPE     reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    BOOL_TYPE       reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    $end            reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    LLAVE_DER       reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    CASE            reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    DEFAULT         reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+    BREAK           reduce using rule 11 (sentencia_print -> PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA .)
+
+
+state 60
+
+    (12) funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .
+
+    PRINT           reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    VOID            reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    STRING_TYPE     reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    VAR             reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    CONST           reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    FINAL           reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    SWITCH          reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    IDENTIFICADOR   reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    INT_TYPE        reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    DOUBLE_TYPE     reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    BOOL_TYPE       reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    $end            reduce using rule 12 (funcion_void -> VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+
+
+state 61
+
+    (16) bloque -> LLAVE_IZQ . LLAVE_DER
+
+    LLAVE_DER       shift and go to state 71
+
+
+state 62
+
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR . COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+
+    COMA            shift and go to state 72
+
+
+state 63
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR . MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+
+    MAYOR           shift and go to state 73
+
+
+state 64
+
+    (13) funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .
+
+    PRINT           reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    VOID            reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    STRING_TYPE     reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    VAR             reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    CONST           reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    FINAL           reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    SWITCH          reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    IDENTIFICADOR   reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    INT_TYPE        reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    DOUBLE_TYPE     reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    BOOL_TYPE       reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+    $end            reduce using rule 13 (funcion_return -> STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return .)
+
+
+state 65
+
+    (14) bloque_return -> LLAVE_IZQ . sentencia_return LLAVE_DER
+    (15) sentencia_return -> . RETURN CADENA PUNTOYCOMA
+
+    RETURN          shift and go to state 75
+
+    sentencia_return               shift and go to state 74
+
+state 66
+
+    (27) declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .
+
+    PRINT           reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    VOID            reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    STRING_TYPE     reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    VAR             reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    CONST           reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    FINAL           reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    SWITCH          reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    IDENTIFICADOR   reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    INT_TYPE        reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    DOUBLE_TYPE     reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    BOOL_TYPE       reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    $end            reduce using rule 27 (declaracion_variable -> tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+
+
+state 67
+
+    (28) declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .
+
+    PRINT           reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    VOID            reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    STRING_TYPE     reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    VAR             reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    CONST           reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    FINAL           reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    SWITCH          reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    IDENTIFICADOR   reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    INT_TYPE        reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    DOUBLE_TYPE     reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    BOOL_TYPE       reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    $end            reduce using rule 28 (declaracion_variable -> VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+
+
+state 68
+
+    (29) declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 76
+
+
+state 69
+
+    (30) declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 77
+
+
+state 70
+
+    (31) estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ . lista_casos LLAVE_DER
+    (32) lista_casos -> . caso
+    (33) lista_casos -> . lista_casos caso
+    (34) lista_casos -> . lista_casos caso_default
+    (35) lista_casos -> . caso_default
+    (36) caso -> . CASE expresion DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA
+    (37) caso_default -> . DEFAULT DOS_PUNTOS sentencia_print
+
+    CASE            shift and go to state 81
+    DEFAULT         shift and go to state 82
+
+    lista_casos                    shift and go to state 78
+    caso                           shift and go to state 79
+    caso_default                   shift and go to state 80
+
+state 71
+
+    (16) bloque -> LLAVE_IZQ LLAVE_DER .
+
+    PRINT           reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    VOID            reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    STRING_TYPE     reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    VAR             reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    CONST           reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    FINAL           reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    SWITCH          reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    IDENTIFICADOR   reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    INT_TYPE        reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    DOUBLE_TYPE     reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    BOOL_TYPE       reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+    $end            reduce using rule 16 (bloque -> LLAVE_IZQ LLAVE_DER .)
+
+
+state 72
+
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA . CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+
+    CORCHETE_IZQ    shift and go to state 83
+
+
+state 73
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR . IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+
+    IDENTIFICADOR   shift and go to state 84
+
+
+state 74
+
+    (14) bloque_return -> LLAVE_IZQ sentencia_return . LLAVE_DER
+
+    LLAVE_DER       shift and go to state 85
+
+
+state 75
+
+    (15) sentencia_return -> RETURN . CADENA PUNTOYCOMA
+
+    CADENA          shift and go to state 86
+
+
+state 76
+
+    (29) declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .
+
+    PRINT           reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    VOID            reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    STRING_TYPE     reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    VAR             reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    CONST           reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    FINAL           reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    SWITCH          reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    IDENTIFICADOR   reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    INT_TYPE        reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    DOUBLE_TYPE     reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    BOOL_TYPE       reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    $end            reduce using rule 29 (declaracion_variable -> CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+
+
+state 77
+
+    (30) declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .
+
+    PRINT           reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    VOID            reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    STRING_TYPE     reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    VAR             reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    CONST           reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    FINAL           reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    SWITCH          reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    IDENTIFICADOR   reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    INT_TYPE        reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    DOUBLE_TYPE     reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    BOOL_TYPE       reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+    $end            reduce using rule 30 (declaracion_variable -> FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA .)
+
+
+state 78
+
+    (31) estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos . LLAVE_DER
+    (33) lista_casos -> lista_casos . caso
+    (34) lista_casos -> lista_casos . caso_default
+    (36) caso -> . CASE expresion DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA
+    (37) caso_default -> . DEFAULT DOS_PUNTOS sentencia_print
+
+    LLAVE_DER       shift and go to state 87
+    CASE            shift and go to state 81
+    DEFAULT         shift and go to state 82
+
+    caso                           shift and go to state 88
+    caso_default                   shift and go to state 89
+
+state 79
+
+    (32) lista_casos -> caso .
+
+    LLAVE_DER       reduce using rule 32 (lista_casos -> caso .)
+    CASE            reduce using rule 32 (lista_casos -> caso .)
+    DEFAULT         reduce using rule 32 (lista_casos -> caso .)
+
+
+state 80
+
+    (35) lista_casos -> caso_default .
+
+    LLAVE_DER       reduce using rule 35 (lista_casos -> caso_default .)
+    CASE            reduce using rule 35 (lista_casos -> caso_default .)
+    DEFAULT         reduce using rule 35 (lista_casos -> caso_default .)
+
+
+state 81
+
+    (36) caso -> CASE . expresion DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . CADENA
+    (24) expresion -> . TRUE
+    (25) expresion -> . FALSE
+    (26) expresion -> . IDENTIFICADOR
+
+    ENTERO          shift and go to state 50
+    DECIMAL         shift and go to state 51
+    CADENA          shift and go to state 52
+    TRUE            shift and go to state 53
+    FALSE           shift and go to state 54
+    IDENTIFICADOR   shift and go to state 48
+
+    expresion                      shift and go to state 90
+
+state 82
+
+    (37) caso_default -> DEFAULT . DOS_PUNTOS sentencia_print
+
+    DOS_PUNTOS      shift and go to state 91
+
+
+state 83
+
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ . lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque
+    (43) lista_param_opcionales -> . param_opcional
+    (44) lista_param_opcionales -> . lista_param_opcionales COMA param_opcional
+    (45) param_opcional -> . tipo IDENTIFICADOR ASIGNACION expresion
+    (17) tipo -> . INT_TYPE
+    (18) tipo -> . DOUBLE_TYPE
+    (19) tipo -> . STRING_TYPE
+    (20) tipo -> . BOOL_TYPE
+
+    INT_TYPE        shift and go to state 20
+    DOUBLE_TYPE     shift and go to state 21
+    STRING_TYPE     shift and go to state 31
+    BOOL_TYPE       shift and go to state 22
+
+    tipo                           shift and go to state 92
+    lista_param_opcionales         shift and go to state 93
+    param_opcional                 shift and go to state 94
+
+state 84
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR . ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+
+    ASIGNACION      shift and go to state 95
+
+
+state 85
+
+    (14) bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .
+
+    PRINT           reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    VOID            reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    STRING_TYPE     reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    VAR             reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    CONST           reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    FINAL           reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    SWITCH          reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    IDENTIFICADOR   reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    INT_TYPE        reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    DOUBLE_TYPE     reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    BOOL_TYPE       reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+    $end            reduce using rule 14 (bloque_return -> LLAVE_IZQ sentencia_return LLAVE_DER .)
+
+
+state 86
+
+    (15) sentencia_return -> RETURN CADENA . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 96
+
+
+state 87
+
+    (31) estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .
+
+    PRINT           reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    VOID            reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    STRING_TYPE     reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    VAR             reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    CONST           reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    FINAL           reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    SWITCH          reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    IDENTIFICADOR   reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    INT_TYPE        reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    DOUBLE_TYPE     reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    BOOL_TYPE       reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+    $end            reduce using rule 31 (estructura_switch -> SWITCH PARENTESIS_IZQ IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ lista_casos LLAVE_DER .)
+
+
+state 88
+
+    (33) lista_casos -> lista_casos caso .
+
+    LLAVE_DER       reduce using rule 33 (lista_casos -> lista_casos caso .)
+    CASE            reduce using rule 33 (lista_casos -> lista_casos caso .)
+    DEFAULT         reduce using rule 33 (lista_casos -> lista_casos caso .)
+
+
+state 89
+
+    (34) lista_casos -> lista_casos caso_default .
+
+    LLAVE_DER       reduce using rule 34 (lista_casos -> lista_casos caso_default .)
+    CASE            reduce using rule 34 (lista_casos -> lista_casos caso_default .)
+    DEFAULT         reduce using rule 34 (lista_casos -> lista_casos caso_default .)
+
+
+state 90
+
+    (36) caso -> CASE expresion . DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA
+
+    DOS_PUNTOS      shift and go to state 97
+
+
+state 91
+
+    (37) caso_default -> DEFAULT DOS_PUNTOS . sentencia_print
+    (11) sentencia_print -> . PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA
+
+    PRINT           shift and go to state 11
+
+    sentencia_print                shift and go to state 98
+
+state 92
+
+    (45) param_opcional -> tipo . IDENTIFICADOR ASIGNACION expresion
+
+    IDENTIFICADOR   shift and go to state 99
+
+
+state 93
+
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales . CORCHETE_DER PARENTESIS_DER bloque
+    (44) lista_param_opcionales -> lista_param_opcionales . COMA param_opcional
+
+    CORCHETE_DER    shift and go to state 101
+    COMA            shift and go to state 100
+
+
+state 94
+
+    (43) lista_param_opcionales -> param_opcional .
+
+    CORCHETE_DER    reduce using rule 43 (lista_param_opcionales -> param_opcional .)
+    COMA            reduce using rule 43 (lista_param_opcionales -> param_opcional .)
+
+
+state 95
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION . LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+
+    LLAVE_IZQ       shift and go to state 102
+
+
+state 96
+
+    (15) sentencia_return -> RETURN CADENA PUNTOYCOMA .
+
+    LLAVE_DER       reduce using rule 15 (sentencia_return -> RETURN CADENA PUNTOYCOMA .)
+
+
+state 97
+
+    (36) caso -> CASE expresion DOS_PUNTOS . sentencia_print BREAK PUNTOYCOMA
+    (11) sentencia_print -> . PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA
+
+    PRINT           shift and go to state 11
+
+    sentencia_print                shift and go to state 103
+
+state 98
+
+    (37) caso_default -> DEFAULT DOS_PUNTOS sentencia_print .
+
+    LLAVE_DER       reduce using rule 37 (caso_default -> DEFAULT DOS_PUNTOS sentencia_print .)
+    CASE            reduce using rule 37 (caso_default -> DEFAULT DOS_PUNTOS sentencia_print .)
+    DEFAULT         reduce using rule 37 (caso_default -> DEFAULT DOS_PUNTOS sentencia_print .)
+
+
+state 99
+
+    (45) param_opcional -> tipo IDENTIFICADOR . ASIGNACION expresion
+
+    ASIGNACION      shift and go to state 104
+
+
+state 100
+
+    (44) lista_param_opcionales -> lista_param_opcionales COMA . param_opcional
+    (45) param_opcional -> . tipo IDENTIFICADOR ASIGNACION expresion
+    (17) tipo -> . INT_TYPE
+    (18) tipo -> . DOUBLE_TYPE
+    (19) tipo -> . STRING_TYPE
+    (20) tipo -> . BOOL_TYPE
+
+    INT_TYPE        shift and go to state 20
+    DOUBLE_TYPE     shift and go to state 21
+    STRING_TYPE     shift and go to state 31
+    BOOL_TYPE       shift and go to state 22
+
+    param_opcional                 shift and go to state 105
+    tipo                           shift and go to state 92
+
+state 101
+
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER . PARENTESIS_DER bloque
+
+    PARENTESIS_DER  shift and go to state 106
+
+
+state 102
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ . lista_pares LLAVE_DER PUNTOYCOMA
+    (39) lista_pares -> . par
+    (40) lista_pares -> . lista_pares COMA par
+    (41) par -> . CADENA DOS_PUNTOS expresion
+
+    CADENA          shift and go to state 109
+
+    lista_pares                    shift and go to state 107
+    par                            shift and go to state 108
+
+state 103
+
+    (36) caso -> CASE expresion DOS_PUNTOS sentencia_print . BREAK PUNTOYCOMA
+
+    BREAK           shift and go to state 110
+
+
+state 104
+
+    (45) param_opcional -> tipo IDENTIFICADOR ASIGNACION . expresion
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . CADENA
+    (24) expresion -> . TRUE
+    (25) expresion -> . FALSE
+    (26) expresion -> . IDENTIFICADOR
+
+    ENTERO          shift and go to state 50
+    DECIMAL         shift and go to state 51
+    CADENA          shift and go to state 52
+    TRUE            shift and go to state 53
+    FALSE           shift and go to state 54
+    IDENTIFICADOR   shift and go to state 48
+
+    expresion                      shift and go to state 111
+
+state 105
+
+    (44) lista_param_opcionales -> lista_param_opcionales COMA param_opcional .
+
+    CORCHETE_DER    reduce using rule 44 (lista_param_opcionales -> lista_param_opcionales COMA param_opcional .)
+    COMA            reduce using rule 44 (lista_param_opcionales -> lista_param_opcionales COMA param_opcional .)
+
+
+state 106
+
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER . bloque
+    (16) bloque -> . LLAVE_IZQ LLAVE_DER
+
+    LLAVE_IZQ       shift and go to state 61
+
+    bloque                         shift and go to state 112
+
+state 107
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares . LLAVE_DER PUNTOYCOMA
+    (40) lista_pares -> lista_pares . COMA par
+
+    LLAVE_DER       shift and go to state 114
+    COMA            shift and go to state 113
+
+
+state 108
+
+    (39) lista_pares -> par .
+
+    LLAVE_DER       reduce using rule 39 (lista_pares -> par .)
+    COMA            reduce using rule 39 (lista_pares -> par .)
+
+
+state 109
+
+    (41) par -> CADENA . DOS_PUNTOS expresion
+
+    DOS_PUNTOS      shift and go to state 115
+
+
+state 110
+
+    (36) caso -> CASE expresion DOS_PUNTOS sentencia_print BREAK . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 116
+
+
+state 111
+
+    (45) param_opcional -> tipo IDENTIFICADOR ASIGNACION expresion .
+
+    CORCHETE_DER    reduce using rule 45 (param_opcional -> tipo IDENTIFICADOR ASIGNACION expresion .)
+    COMA            reduce using rule 45 (param_opcional -> tipo IDENTIFICADOR ASIGNACION expresion .)
+
+
+state 112
+
+    (42) funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .
+
+    PRINT           reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    VOID            reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    STRING_TYPE     reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    VAR             reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    CONST           reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    FINAL           reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    SWITCH          reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    IDENTIFICADOR   reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    INT_TYPE        reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    DOUBLE_TYPE     reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    BOOL_TYPE       reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+    $end            reduce using rule 42 (funcion_opcional -> VOID IDENTIFICADOR PARENTESIS_IZQ tipo IDENTIFICADOR COMA CORCHETE_IZQ lista_param_opcionales CORCHETE_DER PARENTESIS_DER bloque .)
+
+
+state 113
+
+    (40) lista_pares -> lista_pares COMA . par
+    (41) par -> . CADENA DOS_PUNTOS expresion
+
+    CADENA          shift and go to state 109
+
+    par                            shift and go to state 117
+
+state 114
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 118
+
+
+state 115
+
+    (41) par -> CADENA DOS_PUNTOS . expresion
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . CADENA
+    (24) expresion -> . TRUE
+    (25) expresion -> . FALSE
+    (26) expresion -> . IDENTIFICADOR
+
+    ENTERO          shift and go to state 50
+    DECIMAL         shift and go to state 51
+    CADENA          shift and go to state 52
+    TRUE            shift and go to state 53
+    FALSE           shift and go to state 54
+    IDENTIFICADOR   shift and go to state 48
+
+    expresion                      shift and go to state 119
+
+state 116
+
+    (36) caso -> CASE expresion DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA .
+
+    LLAVE_DER       reduce using rule 36 (caso -> CASE expresion DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA .)
+    CASE            reduce using rule 36 (caso -> CASE expresion DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA .)
+    DEFAULT         reduce using rule 36 (caso -> CASE expresion DOS_PUNTOS sentencia_print BREAK PUNTOYCOMA .)
+
+
+state 117
+
+    (40) lista_pares -> lista_pares COMA par .
+
+    LLAVE_DER       reduce using rule 40 (lista_pares -> lista_pares COMA par .)
+    COMA            reduce using rule 40 (lista_pares -> lista_pares COMA par .)
+
+
+state 118
+
+    (38) declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .
+
+    PRINT           reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    VOID            reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    STRING_TYPE     reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    VAR             reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    CONST           reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    FINAL           reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    SWITCH          reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    IDENTIFICADOR   reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    INT_TYPE        reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    DOUBLE_TYPE     reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    BOOL_TYPE       reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+    $end            reduce using rule 38 (declaracion_map -> IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA .)
+
+
+state 119
+
+    (41) par -> CADENA DOS_PUNTOS expresion .
+
+    LLAVE_DER       reduce using rule 41 (par -> CADENA DOS_PUNTOS expresion .)
+    COMA            reduce using rule 41 (par -> CADENA DOS_PUNTOS expresion .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for IDENTIFICADOR in state 14 resolved as shift

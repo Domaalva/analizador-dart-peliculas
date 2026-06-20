@@ -1,0 +1,26 @@
+============================================================
+ANÁLISIS SINTÁCTICO - ANALIZADOR DART
+Desarrollador: DomenikaArboleda
+Archivo analizado: algoritmos/algoritmo_dome_sintactico.dart
+Fecha y hora: 20/06/2026 02:23
+============================================================
+
+Declaración válida (var): genero = "Acción";
+Declaración válida (const): double calificacionMaxima = 10.0;
+Declaración válida (final): String director = "Nolan";
+Declaración válida: int calificacion = 8;
+Print reconocido
+Case reconocido: "Acción"
+Print reconocido
+Case reconocido: "Drama"
+Print reconocido
+Default reconocido
+Estructura switch reconocida
+Par clave-valor: "titulo" : "Inception"
+Par clave-valor: "calificacion" : 8.5
+Map reconocido: pelicula
+Parámetro opcional: double calificacion = 0.0
+Función con parámetros opcionales reconocida: mostrarPelicula
+Programa válido
+
+============================================================
