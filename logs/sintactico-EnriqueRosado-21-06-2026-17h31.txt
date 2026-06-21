@@ -1,0 +1,18 @@
+============================================================
+ANÁLISIS SINTÁCTICO - ANALIZADOR DART
+Desarrollador: EnriqueRosado
+Archivo analizado: algoritmos/algoritmo_enrique_sintactico.dart
+Fecha y hora: 21/06/2026 17:31
+============================================================
+
+Clase reconocida: Pelicula
+Error sintáctico en '"Inception"'
+Print reconocido: titulo
+Ingreso por teclado reconocido: entrada
+While reconocido
+Función void reconocida: mostrarMensaje
+Return reconocido: "Inception"
+Función con retorno reconocida: obtenerTitulo
+Programa válido
+
+============================================================
