@@ -3,7 +3,8 @@ from lexer.lexer import tokens
 
 # ==========================================
 # APORTE ENRIQUE ROSADO
-# Funciones, print y return
+# Funciones, print, return, class,
+# while e ingreso por teclado
 # ==========================================
 
 def p_programa(p):
@@ -30,42 +31,32 @@ def p_elemento(p):
              | estructura_switch
              | declaracion_map
              | funcion_opcional
-            
+             | estructura_while
+             | clase
+             | ingreso_teclado
     '''
     pass
 
 
-# -------------------------
-# PRINT
-# -------------------------
-
 def p_sentencia_print(p):
     '''
-    sentencia_print : PRINT PARENTESIS_IZQ CADENA PARENTESIS_DER PUNTOYCOMA
+    sentencia_print : PRINT PARENTESIS_IZQ expresion PARENTESIS_DER PUNTOYCOMA
     '''
-    print("Print reconocido")
+    print(f"Print reconocido: {p[3]}")
 
-
-# -------------------------
-# FUNCION VOID
-# -------------------------
 
 def p_funcion_void(p):
     '''
     funcion_void : VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
     '''
-    print("Función void reconocida")
+    print(f"Función void reconocida: {p[2]}")
 
-
-# -------------------------
-# FUNCION CON RETURN
-# -------------------------
 
 def p_funcion_return(p):
     '''
     funcion_return : STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return
     '''
-    print("Función con retorno reconocida")
+    print(f"Función con retorno reconocida: {p[2]}")
 
 
 def p_bloque_return(p):
@@ -79,12 +70,8 @@ def p_sentencia_return(p):
     '''
     sentencia_return : RETURN CADENA PUNTOYCOMA
     '''
-    print("Return reconocido")
+    print(f"Return reconocido: {p[2]}")
 
-
-# -------------------------
-# BLOQUE
-# -------------------------
 
 def p_bloque(p):
     '''
@@ -93,9 +80,38 @@ def p_bloque(p):
     pass
 
 
-# -------------------------
-# ERROR
-# -------------------------
+def p_expresion_booleana(p):
+    '''
+    expresion_booleana : expresion MAYOR expresion
+                        | expresion MENOR expresion
+                        | expresion IGUAL_IGUAL expresion
+                        | expresion DISTINTO expresion
+                        | TRUE
+                        | FALSE
+    '''
+    pass
+
+
+def p_estructura_while(p):
+    '''
+    estructura_while : WHILE PARENTESIS_IZQ expresion_booleana PARENTESIS_DER bloque
+    '''
+    print("While reconocido")
+
+
+def p_clase(p):
+    '''
+    clase : CLASS IDENTIFICADOR LLAVE_IZQ LLAVE_DER
+    '''
+    print(f"Clase reconocida: {p[2]}")
+
+
+def p_ingreso_teclado(p):
+    '''
+    ingreso_teclado : STRING_TYPE IDENTIFICADOR ASIGNACION IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTOYCOMA
+    '''
+    print(f"Ingreso por teclado reconocido: {p[2]}")
+
 
 def p_error(p):
     if p:
@@ -280,5 +296,5 @@ def analizar_sintaxis(ruta_archivo, nombre_desarrollador):
     print(resultado)
 
 if __name__ == '__main__':
-    analizar_sintaxis('algoritmos/algoritmo_dome_sintactico.dart', 'DomenikaArboleda')
+    analizar_sintaxis('algoritmos/algoritmo_enrique_sintactico.dart', 'EnriqueRosado')
 
