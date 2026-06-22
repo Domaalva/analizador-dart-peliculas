@@ -1,0 +1,30 @@
+============================================================
+ANÁLISIS SINTÁCTICO - ANALIZADOR DART
+Desarrollador: HenryOlvera
+Archivo analizado: algoritmos/algoritmo_henry_sintactico.dart
+Fecha y hora: 21/06/2026 19:26
+============================================================
+
+Declaración válida: int totalPeliculas = ('binop', '+', 5, 3);
+Declaración válida: double promedio = ('binop', '/', 85, 10);
+Declaración válida: int resultado = ('binop', '*', ('binop', '+', 5, 3), 2);
+Declaración válida: bool esPopular = ('comp', '>', 'totalPeliculas', 8);
+Declaración válida: bool esValida = ('logic', '&&', ('comp', '>=', 'promedio', 0), ('comp', '<=', 'promedio', 10));
+Declaración válida: bool recomendada = ('logic', '||', ('comp', '==', '"Acción"', '"Acción"'), ('comp', '==', '"Drama"', '"Terror"'));
+List reconocida: peliculas
+Print reconocido: ('index', 'peliculas', 'indice')
+For reconocido
+List reconocida: peliculasFavoritas
+Set reconocido: generosPermitidos
+Parámetro nombrado: String titulo = ""
+Parámetro nombrado: double calificacion = 0.0
+Parámetro nombrado: String genero = "Sin género"
+Print reconocido: titulo
+Print reconocido: calificacion
+Print reconocido: genero
+Función con parámetros nombrados reconocida: mostrarPelicula
+Lambda/función anónima reconocida: calcularPromedio
+Print reconocido: ('call', 'calcularPromedio', None)
+Programa válido
+
+============================================================

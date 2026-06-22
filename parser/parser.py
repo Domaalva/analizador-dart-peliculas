@@ -1,5 +1,17 @@
+#Aporte de Henry Olvera
 import ply.yacc as yacc
 from lexer.lexer import tokens
+
+#Precedencia de operadores para evitar conflictos
+precedence = (
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'IGUAL_IGUAL', 'DISTINTO'),
+    ('left', 'MAYOR', 'MENOR', 'MAYOR_IGUAL', 'MENOR_IGUAL'),
+    ('left', 'MAS', 'MENOS'),
+    ('left', 'MULTIPLICACION', 'DIVISION'),
+    ('right', 'NOT'),
+)
 
 # ==========================================
 # APORTE ENRIQUE ROSADO
@@ -32,6 +44,11 @@ def p_elemento(p):
              | declaracion_map
              | funcion_opcional
              | estructura_while
+             | estructura_for
+             | declaracion_list
+             | declaracion_set
+             | funcion_nombrada
+             | declaracion_lambda
              | clase
              | ingreso_teclado
     '''
@@ -40,7 +57,7 @@ def p_elemento(p):
 
 def p_sentencia_print(p):
     '''
-    sentencia_print : PRINT PARENTESIS_IZQ expresion PARENTESIS_DER PUNTOYCOMA
+    sentencia_print : PRINT PARENTESIS_IZQ expresion_general PARENTESIS_DER PUNTOYCOMA
     '''
     print(f"Print reconocido: {p[3]}")
 
@@ -76,6 +93,7 @@ def p_sentencia_return(p):
 def p_bloque(p):
     '''
     bloque : LLAVE_IZQ LLAVE_DER
+          | LLAVE_IZQ elementos LLAVE_DER
     '''
     pass
 
@@ -86,8 +104,179 @@ def p_expresion_booleana(p):
                         | expresion MENOR expresion
                         | expresion IGUAL_IGUAL expresion
                         | expresion DISTINTO expresion
+                        | expresion MAYOR_IGUAL expresion
+                        | expresion MENOR_IGUAL expresion
                         | TRUE
                         | FALSE
+                        | expresion_booleana AND expresion_booleana
+                        | expresion_booleana OR expresion_booleana
+    '''
+    if len(p) == 2:
+        p[0] = p[1]
+    elif len(p) == 4 and p[2] in ('&&', '||'):
+        p[0] = ('logic', p[2], p[1], p[3])
+    elif len(p) == 4:
+        p[0] = ('comp', p[2], p[1], p[3])
+
+
+#Henry Olvera - Expresiones aritméticas
+def p_expresion_aritmetica(p):
+    '''
+    expresion : expresion MAS termino
+              | expresion MENOS termino
+              | termino
+    '''
+    if len(p) == 4:
+        p[0] = ('binop', p[2], p[1], p[3])
+    else:
+        p[0] = p[1]
+
+
+def p_termino(p):
+    '''
+    termino : termino MULTIPLICACION factor
+            | termino DIVISION factor
+            | factor
+    '''
+    if len(p) == 4:
+        p[0] = ('binop', p[2], p[1], p[3])
+    else:
+        p[0] = p[1]
+
+
+def p_factor_primary(p):
+    '''
+    factor : ENTERO
+           | DECIMAL
+           | CADENA
+           | IDENTIFICADOR
+           | PARENTESIS_IZQ expresion PARENTESIS_DER
+    '''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = p[2]
+
+
+def p_factor_call(p):
+    '''
+    factor : factor PARENTESIS_IZQ lista_args PARENTESIS_DER
+    '''
+    p[0] = ('call', p[1], p[3])
+
+
+def p_factor_member(p):
+    '''
+    factor : factor PUNTO IDENTIFICADOR
+    '''
+    p[0] = ('member', p[1], p[3])
+
+
+def p_factor_index(p):
+    '''
+    factor : factor CORCHETE_IZQ expresion CORCHETE_DER
+    '''
+    p[0] = ('index', p[1], p[3])
+
+
+#Henry Olvera - for
+def p_incremento(p):
+    '''
+    incremento : IDENTIFICADOR INCREMENTO
+               | IDENTIFICADOR DECREMENTO
+               | IDENTIFICADOR ASIGNACION expresion
+    '''
+    pass
+
+
+def p_estructura_for(p):
+    '''
+    estructura_for : FOR PARENTESIS_IZQ for_init PUNTOYCOMA expresion_booleana PUNTOYCOMA incremento PARENTESIS_DER bloque
+    '''
+    print("For reconocido")
+
+
+def p_for_init(p):
+    '''
+    for_init :
+             | tipo IDENTIFICADOR ASIGNACION expresion
+             | VAR IDENTIFICADOR ASIGNACION expresion
+    '''
+    pass
+
+
+
+#Henry Olvera - Declaraciones List y Set
+def p_declaracion_list(p):
+    '''
+    declaracion_list : IDENTIFICADOR MENOR tipo MAYOR IDENTIFICADOR ASIGNACION CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
+    '''
+    print(f"List reconocida: {p[5]}")
+
+def p_declaracion_set(p):
+    '''
+    declaracion_set : IDENTIFICADOR MENOR tipo MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_elementos LLAVE_DER PUNTOYCOMA
+    '''
+    print(f"Set reconocido: {p[5]}")
+
+def p_lista_elementos(p):
+    '''
+    lista_elementos : expresion
+                    | lista_elementos COMA expresion
+    '''
+    pass
+
+
+#Henry Olvera -Parámetros opcionales por nombre (llaves {})
+def p_funcion_parametros_nombrados(p):
+    '''
+    funcion_nombrada : VOID IDENTIFICADOR PARENTESIS_IZQ LLAVE_IZQ lista_param_nombrados LLAVE_DER PARENTESIS_DER bloque
+    '''
+    print(f"Función con parámetros nombrados reconocida: {p[2]}")
+
+def p_lista_param_nombrados(p):
+    '''
+    lista_param_nombrados : param_nombrado
+                          | lista_param_nombrados COMA param_nombrado
+    '''
+    pass
+
+def p_param_nombrado(p):
+    '''
+    param_nombrado : tipo IDENTIFICADOR ASIGNACION expresion
+    '''
+    print(f"Parámetro nombrado: {p[1]} {p[2]} = {p[4]}")
+
+
+
+#Henry Olvera - Funciones lambda (forma simplificada)
+def p_declaracion_lambda(p):
+    '''
+    declaracion_lambda : tipo IDENTIFICADOR ASIGNACION PARENTESIS_IZQ lista_params PARENTESIS_DER FLECHA expresion PUNTOYCOMA
+    '''
+    print(f"Lambda/función anónima reconocida: {p[2]}")
+
+
+def p_lista_params(p):
+    '''
+    lista_params :
+                | param_simple
+                | lista_params COMA param_simple
+    '''
+    pass
+
+def p_param_simple(p):
+    '''
+    param_simple : tipo IDENTIFICADOR
+    '''
+    pass
+
+
+def p_lista_args(p):
+    '''
+    lista_args :
+              | expresion
+              | lista_args COMA expresion
     '''
     pass
 
@@ -120,8 +309,10 @@ def p_error(p):
         print("Error sintáctico al final del archivo")
 
 
+
 # ==========================================
 # APORTE DOMENIKA ARBOLEDA - INICIO
+
 # Reglas: asignación de variables (todos los tipos),
 # estructura de control switch, estructura de datos Map,
 # función con parámetros opcionales
@@ -137,42 +328,32 @@ def p_tipo(p):
     '''
     p[0] = p[1]
 
-# --- Expresión simple auxiliar ---
-def p_expresion_simple(p):
-    '''
-    expresion : ENTERO
-              | DECIMAL
-              | CADENA
-              | TRUE
-              | FALSE
-              | IDENTIFICADOR
-    '''
-    p[0] = p[1]
+# (Se usa 'factor' y 'expresion' aritmética para manejar literales y identificadores)
 
 # -------------------------
 # 1. ASIGNACIÓN DE VARIABLES (todos los tipos)
 # -------------------------
 def p_declaracion_variable_tipo(p):
     '''
-    declaracion_variable : tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    declaracion_variable : tipo IDENTIFICADOR ASIGNACION expresion_general PUNTOYCOMA
     '''
     print(f"Declaración válida: {p[1]} {p[2]} = {p[4]};")
 
 def p_declaracion_variable_var(p):
     '''
-    declaracion_variable : VAR IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    declaracion_variable : VAR IDENTIFICADOR ASIGNACION expresion_general PUNTOYCOMA
     '''
     print(f"Declaración válida (var): {p[2]} = {p[4]};")
 
 def p_declaracion_variable_const(p):
     '''
-    declaracion_variable : CONST tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    declaracion_variable : CONST tipo IDENTIFICADOR ASIGNACION expresion_general PUNTOYCOMA
     '''
     print(f"Declaración válida (const): {p[2]} {p[3]} = {p[5]};")
 
 def p_declaracion_variable_final(p):
     '''
-    declaracion_variable : FINAL tipo IDENTIFICADOR ASIGNACION expresion PUNTOYCOMA
+    declaracion_variable : FINAL tipo IDENTIFICADOR ASIGNACION expresion_general PUNTOYCOMA
     '''
     print(f"Declaración válida (final): {p[2]} {p[3]} = {p[5]};")
 
@@ -250,6 +431,14 @@ def p_param_opcional(p):
     '''
     print(f"Parámetro opcional: {p[1]} {p[2]} = {p[4]}")
 
+
+def p_expresion_general(p):
+    '''
+    expresion_general : expresion
+                      | expresion_booleana
+    '''
+    p[0] = p[1]
+
 # ==========================================
 # APORTE DOMENIKA ARBOLEDA - FIN
 # ==========================================
@@ -296,5 +485,5 @@ def analizar_sintaxis(ruta_archivo, nombre_desarrollador):
     print(resultado)
 
 if __name__ == '__main__':
-    analizar_sintaxis('algoritmos/algoritmo_enrique_sintactico.dart', 'EnriqueRosado')
+    analizar_sintaxis('algoritmos/algoritmo_henry_sintactico.dart', 'HenryOlvera')
 
