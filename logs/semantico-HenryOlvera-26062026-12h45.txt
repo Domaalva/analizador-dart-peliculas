@@ -1,0 +1,30 @@
+ANÁLISIS SEMÁNTICO - ANALIZADOR DART
+Desarrollador: HenryOlvera
+Archivo analizado: algoritmos\algoritmo_semantico_henry.dart
+Fecha y hora: 26/06/2026 12:45
+
+
+ERRORES SEMÁNTICOS:
+Linea 6: Error semántico [Identificadores]: la constante 'calificacionMaxima' no puede ser modificada después de su declaración.
+Linea 9: Error semántico [Identificadores]: la constante 'plataforma' no puede ser modificada después de su declaración.
+Linea 12: Error semántico [Identificadores]: la constante 'minimoCalificacion' no puede ser modificada después de su declaración.
+Linea 16: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo String a una variable de tipo int ('calificacion_wrong').
+Linea 19: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo String a una variable de tipo double ('promedio_wrong').
+Linea 22: Error semántico [Identificadores]: la variable 'esRecomendada_wrong' no fue declarada antes de la asignación.
+Linea 25: Error semántico [Identificadores]: la variable 'titulo_wrong' no fue declarada antes de la asignación.
+Linea 34: Error semántico [Identificadores]: la variable 'nuevaVar' no fue declarada antes de la asignación.
+Linea 38: Error semántico [Identificadores]: la constante 'fijo' no puede ser modificada después de su declaración.
+
+PRUEBAS APROBADAS:
+Linea 5: Declaración const válida: double calificacionMaxima = 10.0
+Linea 8: Declaración const válida: String plataforma = "Netflix"
+Linea 11: Declaración const válida: int minimoCalificacion = 0
+Linea 15: Declaración válida: int calificacion = 8
+Linea 18: Declaración válida: double promedio = 8.5
+Linea 21: Declaración válida: bool esRecomendada = true
+Linea 24: Declaración válida: String titulo = "Inception"
+Linea 28: Declaración var: x = 5 (tipo detectado: int)
+Linea 29: Declaración var: y = "hola" (tipo detectado: String)
+Linea 30: Declaración válida: int a = 2
+Linea 31: Declaración válida: int b = a
+Linea 37: Declaración final válida: int fijo = 3
