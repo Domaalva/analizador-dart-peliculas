@@ -1,0 +1,26 @@
+============================================================
+ANÁLISIS SEMÁNTICO - ANALIZADOR DART
+Desarrollador: DomenikaArboleda
+Archivo analizado: algoritmos/algoritmo_semantico_dome.dart
+Fecha y hora: 27/06/2026 05:05
+============================================================
+
+ERRORES SEMÁNTICOS:
+  Línea 14: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo String a una variable de tipo int ('calificacionMal').
+  Línea 15: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo String a una variable de tipo double ('promedioMal').
+  Línea 16: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo int a una variable de tipo bool ('esRecomendadaMal').
+  Línea 17: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo int a una variable de tipo String ('tituloMal').
+  Línea 20: Error semántico [Identificadores]: la constante 'calificacionMaxima' no puede ser modificada después de su declaración.
+  Línea 21: Error semántico [Identificadores]: la constante 'plataforma' no puede ser modificada después de su declaración.
+  Línea 22: Error semántico [Identificadores]: la constante 'director' no puede ser modificada después de su declaración.
+
+PRUEBAS APROBADAS:
+  Línea 5: Declaración válida: int calificacion = 8
+  Línea 6: Declaración válida: double promedio = 8.5
+  Línea 7: Declaración válida: String titulo = "Inception"
+  Línea 8: Declaración válida: bool esRecomendada = true
+  Línea 9: Declaración const válida: double calificacionMaxima = 10.0
+  Línea 10: Declaración const válida: String plataforma = "Netflix"
+  Línea 11: Declaración final válida: String director = "Nolan"
+
+============================================================

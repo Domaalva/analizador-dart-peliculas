@@ -172,3 +172,152 @@ class SemanticAnalyzer:
                     log.write(f'Linea {l}: {msg}\n')
 
         return ruta_log
+
+# ==========================================
+# APORTE DOMENIKA ARBOLEDA - INICIO
+# Reglas semánticas:
+# 1. Asignación de tipo: compatibilidad entre tipo declarado y valor asignado
+# 2. Identificadores: constante const no puede modificarse
+# ==========================================
+
+class SemanticAnalyzerDome:
+    def __init__(self):
+        self.tabla_simbolos = {}  # nombre -> {'tipo': str, 'es_const': bool, 'linea': int}
+        self.errores = []
+        self.aprobados = []
+
+    def inferir_tipo(self, expr):
+        expr = expr.strip()
+        if re.match(r'^\".*\"$', expr) or re.match(r"^'.*'$", expr):
+            return 'String'
+        if re.match(r'^-?\d+$', expr):
+            return 'int'
+        if re.match(r'^-?\d+\.\d+$', expr):
+            return 'double'
+        if expr in ('true', 'false'):
+            return 'bool'
+        if re.match(r'^[A-Za-z_]\w*$', expr):
+            sym = self.tabla_simbolos.get(expr)
+            if sym:
+                return sym['tipo']
+        return None
+
+    def analizar(self, ruta_codigo, nombre_desarrollador):
+        self.tabla_simbolos = {}
+        self.errores = []
+        self.aprobados = []
+
+        with open(ruta_codigo, 'r', encoding='utf-8') as f:
+            lineas = f.readlines()
+
+        for num, raw in enumerate(lineas, start=1):
+            linea = re.sub(r'//.*$', '', raw).strip()
+            if not linea:
+                continue
+
+            # --- REGLA 2: const no puede modificarse ---
+            # Detectar declaración const
+            m = re.match(r'^const\s+(int|double|String|bool)\s+([A-Za-z_]\w*)\s*=\s*(.+);$', linea)
+            if m:
+                tipo, nombre, expr = m.group(1), m.group(2), m.group(3).strip()
+                self.tabla_simbolos[nombre] = {'tipo': tipo, 'es_const': True, 'linea': num}
+
+                # --- REGLA 1: verificar compatibilidad de tipo ---
+                tipo_valor = self.inferir_tipo(expr)
+                if tipo_valor is None:
+                    self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede determinar el tipo de '{expr}' para la constante '{nombre}'."))
+                elif tipo_valor != tipo:
+                    self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo {tipo_valor} a una constante de tipo {tipo} ('{nombre}')."))
+                else:
+                    self.aprobados.append((num, f"Declaración const válida: {tipo} {nombre} = {expr}"))
+                continue
+
+            # Detectar declaración final (también inmutable)
+            m = re.match(r'^final\s+(int|double|String|bool)\s+([A-Za-z_]\w*)\s*=\s*(.+);$', linea)
+            if m:
+                tipo, nombre, expr = m.group(1), m.group(2), m.group(3).strip()
+                self.tabla_simbolos[nombre] = {'tipo': tipo, 'es_const': True, 'linea': num}
+
+                tipo_valor = self.inferir_tipo(expr)
+                if tipo_valor is None:
+                    self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede determinar el tipo de '{expr}' para la variable final '{nombre}'."))
+                elif tipo_valor != tipo:
+                    self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo {tipo_valor} a una variable final de tipo {tipo} ('{nombre}')."))
+                else:
+                    self.aprobados.append((num, f"Declaración final válida: {tipo} {nombre} = {expr}"))
+                continue
+
+            # Detectar declaración con tipo explícito
+            m = re.match(r'^(int|double|String|bool)\s+([A-Za-z_]\w*)\s*=\s*(.+);$', linea)
+            if m:
+                tipo, nombre, expr = m.group(1), m.group(2), m.group(3).strip()
+                self.tabla_simbolos[nombre] = {'tipo': tipo, 'es_const': False, 'linea': num}
+
+                # --- REGLA 1: verificar compatibilidad de tipo ---
+                tipo_valor = self.inferir_tipo(expr)
+                if tipo_valor is None:
+                    self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede determinar el tipo de '{expr}' para '{nombre}'."))
+                elif tipo_valor != tipo:
+                    self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo {tipo_valor} a una variable de tipo {tipo} ('{nombre}')."))
+                else:
+                    self.aprobados.append((num, f"Declaración válida: {tipo} {nombre} = {expr}"))
+                continue
+
+            # Detectar reasignación a variable ya declarada
+            m = re.match(r'^([A-Za-z_]\w*)\s*=\s*(.+);$', linea)
+            if m:
+                nombre, expr = m.group(1), m.group(2).strip()
+                sym = self.tabla_simbolos.get(nombre)
+
+                # --- REGLA 2: const no puede modificarse ---
+                if sym and sym['es_const']:
+                    self.errores.append((num, f"Error semántico [Identificadores]: la constante '{nombre}' no puede ser modificada después de su declaración."))
+                    continue
+
+                if sym is None:
+                    self.errores.append((num, f"Error semántico [Identificadores]: la variable '{nombre}' no fue declarada antes de ser usada."))
+                    continue
+
+                # --- REGLA 1: verificar compatibilidad de tipo en reasignación ---
+                tipo_valor = self.inferir_tipo(expr)
+                if tipo_valor is None:
+                    self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede determinar el tipo de '{expr}' en la reasignación a '{nombre}'."))
+                elif tipo_valor != sym['tipo']:
+                    self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo {tipo_valor} a una variable de tipo {sym['tipo']} ('{nombre}')."))
+                else:
+                    self.aprobados.append((num, f"Reasignación válida: {nombre} = {expr}"))
+                continue
+
+        # Generar log
+        ahora = datetime.now().strftime('%d%m%Y-%Hh%M')
+        nombre_log = f'semantico-{nombre_desarrollador}-{ahora}.txt'
+        ruta_log = os.path.join('logs', nombre_log)
+        os.makedirs('logs', exist_ok=True)
+
+        with open(ruta_log, 'w', encoding='utf-8') as log:
+            log.write('=' * 60 + '\n')
+            log.write('ANÁLISIS SEMÁNTICO - ANALIZADOR DART\n')
+            log.write(f'Desarrollador: {nombre_desarrollador}\n')
+            log.write(f'Archivo analizado: {ruta_codigo}\n')
+            log.write(f'Fecha y hora: {datetime.now().strftime("%d/%m/%Y %H:%M")}\n')
+            log.write('=' * 60 + '\n\n')
+            log.write('ERRORES SEMÁNTICOS:\n')
+            if not self.errores:
+                log.write('  - No se detectaron errores semánticos.\n')
+            else:
+                for l, msg in self.errores:
+                    log.write(f'  Línea {l}: {msg}\n')
+            log.write('\nPRUEBAS APROBADAS:\n')
+            if not self.aprobados:
+                log.write('  - Ninguna prueba aprobada.\n')
+            else:
+                for l, msg in self.aprobados:
+                    log.write(f'  Línea {l}: {msg}\n')
+            log.write('\n' + '=' * 60 + '\n')
+
+        print(f'Log generado: {nombre_log}')
+        return ruta_log
+
+# ==========================================
+# APORTE DOMENIKA ARBOLEDA - FIN
+# ==========================================
