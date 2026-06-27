@@ -1,0 +1,35 @@
+============================================================
+ANÁLISIS SEMÁNTICO - ANALIZADOR DART
+Desarrollador: DomenikaArboleda
+Archivo analizado: algoritmos/algoritmo_semantico_dome.dart
+Fecha y hora: 27/06/2026 05:20
+============================================================
+
+ERRORES SEMÁNTICOS:
+  Línea 14: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo String a una variable de tipo int ('calificacionMal').
+  Línea 15: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo String a una variable de tipo double ('promedioMal').
+  Línea 16: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo int a una variable de tipo bool ('esRecomendadaMal').
+  Línea 17: Error semántico [Asignación de tipo]: no se puede asignar un valor de tipo int a una variable de tipo String ('tituloMal').
+  Línea 20: Error semántico [Identificadores]: la constante 'calificacionMaxima' no puede ser modificada después de su declaración.
+  Línea 21: Error semántico [Identificadores]: la constante 'plataforma' no puede ser modificada después de su declaración.
+  Línea 22: Error semántico [Identificadores]: la constante 'director' no puede ser modificada después de su declaración.
+  Línea 25: Error semántico [Asignación de tipo]: no se puede determinar el tipo de '5 + 3' para 'totalValido'.
+  Línea 26: Error semántico [Asignación de tipo]: no se puede determinar el tipo de '8.5 + 1.5' para 'promedioValido'.
+  Línea 28: Error semántico [Operaciones permitidas]: no es posible realizar '+' entre tipo int y tipo String.
+  Línea 28: Error semántico [Asignación de tipo]: no se puede determinar el tipo de '5 + "Accion"' para 'operacionInvalida'.
+  Línea 29: Error semántico [Operaciones permitidas]: el operador '-' no puede aplicarse a valores de tipo String.
+  Línea 30: Error semántico [Operaciones permitidas]: no es posible realizar '+' con valores de tipo bool.
+  Línea 30: Error semántico [Asignación de tipo]: no se puede determinar el tipo de 'true + 1' para 'operacionBool'.
+
+PRUEBAS APROBADAS:
+  Línea 5: Declaración válida: int calificacion = 8
+  Línea 6: Declaración válida: double promedio = 8.5
+  Línea 7: Declaración válida: String titulo = "Inception"
+  Línea 8: Declaración válida: bool esRecomendada = true
+  Línea 9: Declaración const válida: double calificacionMaxima = 10.0
+  Línea 10: Declaración const válida: String plataforma = "Netflix"
+  Línea 11: Declaración final válida: String director = "Nolan"
+  Línea 27: Declaración válida: String concatenacion = "Inception" + " Movie"
+  Línea 29: Declaración válida: String restaInvalida = "Drama" - "Comedia"
+
+============================================================

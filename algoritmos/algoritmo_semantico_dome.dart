@@ -20,3 +20,11 @@ String tituloMal = 42;
 calificacionMaxima = 9.0;
 plataforma = "HBO";
 director = "Spielberg";
+
+// Prueba de operaciones permitidas
+int totalValido = 5 + 3;
+double promedioValido = 8.5 + 1.5;
+String concatenacion = "Inception" + " Movie";
+int operacionInvalida = 5 + "Accion";
+String restaInvalida = "Drama" - "Comedia";
+bool operacionBool = true + 1;

@@ -178,11 +178,12 @@ class SemanticAnalyzer:
 # Reglas semánticas:
 # 1. Asignación de tipo: compatibilidad entre tipo declarado y valor asignado
 # 2. Identificadores: constante const no puede modificarse
+# 3. Operaciones permitidas: operaciones entre tipos compatibles
 # ==========================================
 
 class SemanticAnalyzerDome:
     def __init__(self):
-        self.tabla_simbolos = {}  # nombre -> {'tipo': str, 'es_const': bool, 'linea': int}
+        self.tabla_simbolos = {}
         self.errores = []
         self.aprobados = []
 
@@ -202,6 +203,42 @@ class SemanticAnalyzerDome:
                 return sym['tipo']
         return None
 
+    def verificar_operacion(self, expr, num):
+        m = re.match(r'^(.+?)\s*([\+\-\*\/])\s*(.+)$', expr.strip())
+        if not m:
+            return True
+
+        izq = m.group(1).strip()
+        op  = m.group(2).strip()
+        der = m.group(3).strip()
+
+        tipo_izq = self.inferir_tipo(izq)
+        tipo_der = self.inferir_tipo(der)
+
+        if tipo_izq is None or tipo_der is None:
+            return True
+
+        tipos_numericos = {'int', 'double'}
+
+        if tipo_izq == 'String' or tipo_der == 'String':
+            if op != '+':
+                self.errores.append((num, f"Error semántico [Operaciones permitidas]: el operador '{op}' no puede aplicarse a valores de tipo String."))
+                return False
+            if tipo_izq != 'String' or tipo_der != 'String':
+                self.errores.append((num, f"Error semántico [Operaciones permitidas]: no es posible realizar '{op}' entre tipo {tipo_izq} y tipo {tipo_der}."))
+                return False
+            return True
+
+        if tipo_izq == 'bool' or tipo_der == 'bool':
+            self.errores.append((num, f"Error semántico [Operaciones permitidas]: no es posible realizar '{op}' con valores de tipo bool."))
+            return False
+
+        if tipo_izq in tipos_numericos and tipo_der in tipos_numericos:
+            return True
+
+        self.errores.append((num, f"Error semántico [Operaciones permitidas]: operación '{op}' no permitida entre tipos {tipo_izq} y {tipo_der}."))
+        return False
+
     def analizar(self, ruta_codigo, nombre_desarrollador):
         self.tabla_simbolos = {}
         self.errores = []
@@ -216,13 +253,10 @@ class SemanticAnalyzerDome:
                 continue
 
             # --- REGLA 2: const no puede modificarse ---
-            # Detectar declaración const
             m = re.match(r'^const\s+(int|double|String|bool)\s+([A-Za-z_]\w*)\s*=\s*(.+);$', linea)
             if m:
                 tipo, nombre, expr = m.group(1), m.group(2), m.group(3).strip()
                 self.tabla_simbolos[nombre] = {'tipo': tipo, 'es_const': True, 'linea': num}
-
-                # --- REGLA 1: verificar compatibilidad de tipo ---
                 tipo_valor = self.inferir_tipo(expr)
                 if tipo_valor is None:
                     self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede determinar el tipo de '{expr}' para la constante '{nombre}'."))
@@ -232,12 +266,11 @@ class SemanticAnalyzerDome:
                     self.aprobados.append((num, f"Declaración const válida: {tipo} {nombre} = {expr}"))
                 continue
 
-            # Detectar declaración final (también inmutable)
+            # Detectar declaración final
             m = re.match(r'^final\s+(int|double|String|bool)\s+([A-Za-z_]\w*)\s*=\s*(.+);$', linea)
             if m:
                 tipo, nombre, expr = m.group(1), m.group(2), m.group(3).strip()
                 self.tabla_simbolos[nombre] = {'tipo': tipo, 'es_const': True, 'linea': num}
-
                 tipo_valor = self.inferir_tipo(expr)
                 if tipo_valor is None:
                     self.errores.append((num, f"Error semántico [Asignación de tipo]: no se puede determinar el tipo de '{expr}' para la variable final '{nombre}'."))
@@ -253,6 +286,9 @@ class SemanticAnalyzerDome:
                 tipo, nombre, expr = m.group(1), m.group(2), m.group(3).strip()
                 self.tabla_simbolos[nombre] = {'tipo': tipo, 'es_const': False, 'linea': num}
 
+                # --- REGLA 3: verificar operaciones permitidas ---
+                self.verificar_operacion(expr, num)
+
                 # --- REGLA 1: verificar compatibilidad de tipo ---
                 tipo_valor = self.inferir_tipo(expr)
                 if tipo_valor is None:
@@ -263,7 +299,20 @@ class SemanticAnalyzerDome:
                     self.aprobados.append((num, f"Declaración válida: {tipo} {nombre} = {expr}"))
                 continue
 
-            # Detectar reasignación a variable ya declarada
+            # Detectar declaración var
+            m = re.match(r'^var\s+([A-Za-z_]\w*)\s*=\s*(.+);$', linea)
+            if m:
+                nombre, expr = m.group(1), m.group(2).strip()
+                tipo_rhs = self.inferir_tipo(expr)
+                tipo_reg = tipo_rhs if tipo_rhs else 'var'
+                self.tabla_simbolos[nombre] = {'tipo': tipo_reg, 'es_const': False, 'linea': num}
+                if tipo_rhs is None:
+                    self.aprobados.append((num, f"Declaración var: {nombre} = {expr} (tipo indeterminado)"))
+                else:
+                    self.aprobados.append((num, f"Declaración var: {nombre} = {expr} (tipo detectado: {tipo_rhs})"))
+                continue
+
+            # Detectar reasignación
             m = re.match(r'^([A-Za-z_]\w*)\s*=\s*(.+);$', linea)
             if m:
                 nombre, expr = m.group(1), m.group(2).strip()
@@ -277,6 +326,9 @@ class SemanticAnalyzerDome:
                 if sym is None:
                     self.errores.append((num, f"Error semántico [Identificadores]: la variable '{nombre}' no fue declarada antes de ser usada."))
                     continue
+
+                # --- REGLA 3: verificar operaciones permitidas en reasignación ---
+                self.verificar_operacion(expr, num)
 
                 # --- REGLA 1: verificar compatibilidad de tipo en reasignación ---
                 tipo_valor = self.inferir_tipo(expr)
