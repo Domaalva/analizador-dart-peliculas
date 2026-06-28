@@ -50,7 +50,6 @@ def p_elemento(p):
              | funcion_nombrada
              | declaracion_lambda
              | clase
-             | ingreso_teclado
     '''
     pass
 
@@ -71,7 +70,7 @@ def p_funcion_void(p):
 
 def p_funcion_return(p):
     '''
-    funcion_return : STRING_TYPE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return
+    funcion_return : tipo IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque_return
     '''
     print(f"Función con retorno reconocida: {p[2]}")
 
@@ -485,5 +484,5 @@ def analizar_sintaxis(ruta_archivo, nombre_desarrollador):
     print(resultado)
 
 if __name__ == '__main__':
-    analizar_sintaxis('algoritmos/algoritmo_henry_sintactico.dart', 'HenryOlvera')
+    analizar_sintaxis('algoritmos/algoritmo_enrique_sintactico.dart', 'EnriqueRosado')
 

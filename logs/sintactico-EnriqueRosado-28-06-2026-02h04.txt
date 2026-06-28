@@ -1,0 +1,18 @@
+============================================================
+ANÁLISIS SINTÁCTICO - ANALIZADOR DART
+Desarrollador: EnriqueRosado
+Archivo analizado: algoritmos/algoritmo_enrique_sintactico.dart
+Fecha y hora: 28/06/2026 02:04
+============================================================
+
+Clase reconocida: Pelicula
+Declaración válida: String titulo = "Inception";
+Print reconocido: titulo
+Declaración válida: String entrada = ('call', ('member', 'teclado', 'leer'), None);
+While reconocido
+Función void reconocida: mostrarMensaje
+Return reconocido: "Inception"
+Función con retorno reconocida: obtenerTitulo
+Programa válido
+
+============================================================
