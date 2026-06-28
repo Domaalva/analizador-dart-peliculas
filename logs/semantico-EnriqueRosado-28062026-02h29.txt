@@ -1,0 +1,50 @@
+============================================================
+ANÁLISIS SEMÁNTICO - ANALIZADOR DART
+Desarrollador: EnriqueRosado
+Archivo analizado: algoritmos/algoritmo_semantico_enrique.dart
+Fecha y hora: 28/06/2026 02:29
+============================================================
+
+REGLAS IMPLEMENTADAS POR ENRIQUE ROSADO:
+  1. Rango de calificación válido entre 0 y 10.
+  2. Géneros permitidos en la plataforma.
+  3. Retorno de funciones compatible con el tipo declarado.
+  4. break y continue usados dentro de estructuras válidas.
+
+ERRORES SEMÁNTICOS:
+  Línea 11: Error semántico [Géneros permitidos]: el género 'Western' asignado a 'generoInvalido' no está permitido.
+  Línea 12: Error semántico [Rango de calificación]: la variable 'calificacionInvalida' tiene valor 11.5, pero debe estar entre 0 y 10.
+  Línea 13: Error semántico [Rango de calificación]: la variable 'ratingInvalido' tiene valor -1.0, pero debe estar entre 0 y 10.
+  Línea 25: Error semántico [Géneros permitidos]: el género 'Gore' no pertenece a la lista permitida.
+  Línea 26: Error semántico [Rango de calificación]: el valor 15.0 del campo de calificación debe estar entre 0 y 10.
+  Línea 44: Error semántico [Retorno de función]: se esperaba un valor de tipo String y se recibió un valor de tipo int.
+  Línea 48: Error semántico [Retorno de función]: se esperaba un valor de tipo double y se recibió un valor de tipo String.
+  Línea 52: Error semántico [Retorno de función]: se esperaba un valor de tipo bool y se recibió un valor de tipo String.
+  Línea 56: Error semántico [Retorno de función]: la función void 'mostrarMensajeIncorrecto' no debe retornar un valor.
+  Línea 69: Error semántico [Estructuras de control]: la instrucción break solo puede utilizarse dentro de un bucle o switch.
+  Línea 70: Error semántico [Estructuras de control]: la instrucción continue solo puede utilizarse dentro de un bucle.
+
+PRUEBAS APROBADAS:
+  Línea 5: Género permitido válido: genero = 'Acción'
+  Línea 6: Rango de calificación válido: calificacion = 8.8
+  Línea 7: Rango de calificación válido: rating = 10.0
+  Línea 8: Rango de calificación válido: promedio = 7.5
+  Línea 18: Género permitido válido en estructura de datos: 'Ciencia ficción'
+  Línea 19: Rango de calificación válido en estructura de datos: 9.0
+  Línea 30: Función registrada: String obtenerGenero()
+  Línea 31: Return válido en función 'obtenerGenero': tipo String.
+  Línea 34: Función registrada: double obtenerPromedio()
+  Línea 35: Return válido en función 'obtenerPromedio': tipo double.
+  Línea 38: Función registrada: bool esPopular()
+  Línea 39: Return válido en función 'esPopular': tipo bool.
+  Línea 43: Función registrada: String obtenerTituloIncorrecto()
+  Línea 47: Función registrada: double obtenerPromedioIncorrecto()
+  Línea 51: Función registrada: bool esPopularIncorrecto()
+  Línea 55: Función registrada: void mostrarMensajeIncorrecto()
+  Línea 60: Estructura de repetición registrada.
+  Línea 61: Uso válido de break dentro de estructura de control.
+  Línea 64: Estructura de repetición registrada.
+  Línea 65: Uso válido de continue dentro de un bucle.
+
+Estado del análisis: CON ERRORES
+============================================================
