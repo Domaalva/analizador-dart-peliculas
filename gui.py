@@ -185,13 +185,23 @@ class AnalizadorGUI:
         if tab in ("Léxico", "Todos"):
             lineas.append(("titulo", "═══ ANÁLISIS LÉXICO ═══\n"))
             try:
-                from lexer.lexer import lexer
+                from lexer.lexer import lexer, errores_lexicos
+                errores_lexicos.clear()
+
                 lexer.lineno = 1
                 lexer.input(codigo)
+
                 toks = []
+
                 for tok in lexer:
                     toks.append(tok)
 
+                # Mostrar errores léxicos encontrados
+                for err in errores_lexicos:
+                    lineas.append(("error", f"{err}\n"))
+
+                total_errores += len(errores_lexicos)
+                
                 total_tokens += len(toks)
                 lineas.append(("info", f"Tokens encontrados: {len(toks)}\n\n"))
                 for tok in toks:

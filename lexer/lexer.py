@@ -177,12 +177,16 @@ def t_newline(t):
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
 
+errores_lexicos = []
 # Manejo de errores léxicos
 def t_error(t):
-    print(
-        f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' "
-        f"en línea {t.lineno}"
+    mensaje = (
+        f"ERROR LÉXICO: Carácter ilegal "
+        f"'{t.value[0]}' en línea {t.lineno}"
     )
+
+    errores_lexicos.append(mensaje)
+
     t.lexer.skip(1)
 
 # AUTOR: Enrique Rosado
