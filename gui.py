@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 
 # ==========================================
-# INTERFAZ GRÁFICA - Domenika Arboleda - Enrique Rosado - Henry Olvera
+# INTERFAZ GRÁFICA - Domenika Arboleda
 # Analizador Dart — Plataforma de Películas
 # ==========================================
 
@@ -71,8 +71,7 @@ class AnalizadorGUI:
         stats_frame = tk.Frame(self.root, bg="#F9F9F7", pady=10)
         stats_frame.pack(fill="x", padx=20)
 
-        # Guardamos también las etiquetas de título para poder actualizarlas
-        self.stat_card1_label, self.stat_tokens  = self._stat_card(stats_frame, "Tokens encontrados",  "0", "#630ED4")
+        self.stat_card1_label, self.stat_tokens  = self._stat_card(stats_frame, "Tokens encontrados", "0", "#630ED4")
         self.stat_card2_label, self.stat_errores = self._stat_card(stats_frame, "Errores detectados",  "0", "#A43073")
         self.stat_card3_label, self.stat_estado  = self._stat_card(stats_frame, "Estado",        "Listo", "#005B3D")
 
@@ -91,7 +90,6 @@ class AnalizadorGUI:
         return lbl_title, lbl_value
 
     def _actualizar_labels_stats(self, tab):
-        """Cambia los títulos de las tarjetas según la pestaña activa."""
         if tab == "Léxico":
             self.stat_card1_label.config(text="Tokens encontrados")
             self.stat_card2_label.config(text="Errores léxicos")
@@ -101,16 +99,15 @@ class AnalizadorGUI:
         elif tab == "Semántico":
             self.stat_card1_label.config(text="Variables analizadas")
             self.stat_card2_label.config(text="Errores semánticos")
-        else:  # Todos
+        else:
             self.stat_card1_label.config(text="Tokens / Variables")
             self.stat_card2_label.config(text="Errores detectados")
 
-        # Resetear valores al cambiar de pestaña
         self.stat_tokens.config(text="0")
         self.stat_errores.config(text="0")
         self.stat_estado.config(text="Listo", fg="#005B3D")
 
-    # ── MAIN (editor + resultados) ───────────────────
+    # ── MAIN ────────────────────────────────────────
     def _build_main(self):
         main = tk.Frame(self.root, bg="#F9F9F7")
         main.pack(fill="both", expand=True, padx=20, pady=(0, 8))
@@ -141,19 +138,25 @@ class AnalizadorGUI:
         self.resultado.tag_config("info",   foreground="#7C3AED", font=("Courier New", 10))
         self.resultado.tag_config("titulo", foreground="#1A1C1B", font=("Courier New", 11, "bold"))
 
-    # ── TOOLBAR ──────────────────────────────────────
+    # ── TOOLBAR ─────────────────────────────────────
     def _build_toolbar(self):
         bar = tk.Frame(self.root, bg="#F9F9F7", pady=8)
         bar.pack(fill="x", padx=20)
-        btn_style = dict(font=("Helvetica", 11), relief="flat", padx=18, pady=8, cursor="hand2")
-        tk.Button(bar, text="▶  Analizar",     bg="#7C3AED", fg="white",   command=self._analizar,  **btn_style).pack(side="left", padx=4)
-        tk.Button(bar, text="🗑  Limpiar",      bg="#FFFFFF", fg="#7C3AED", command=self._limpiar,   **btn_style).pack(side="left", padx=4)
-        tk.Button(bar, text="📂  Cargar .dart", bg="#FFFFFF", fg="#7C3AED", command=self._cargar,    **btn_style).pack(side="left", padx=4)
-        tk.Button(bar, text="💾  Exportar",     bg="#FFFFFF", fg="#7C3AED", command=self._exportar,  **btn_style).pack(side="left", padx=4)
+        btn_style = dict(font=("Helvetica", 11), relief="flat",
+                         padx=18, pady=8, cursor="hand2")
+        tk.Button(bar, text="▶  Analizar",     bg="#7C3AED", fg="white",
+                  command=self._analizar,  **btn_style).pack(side="left", padx=4)
+        tk.Button(bar, text="🗑  Limpiar",      bg="#FFFFFF", fg="#7C3AED",
+                  command=self._limpiar,   **btn_style).pack(side="left", padx=4)
+        tk.Button(bar, text="📂  Cargar .dart", bg="#FFFFFF", fg="#7C3AED",
+                  command=self._cargar,    **btn_style).pack(side="left", padx=4)
+        tk.Button(bar, text="💾  Exportar",     bg="#FFFFFF", fg="#7C3AED",
+                  command=self._exportar,  **btn_style).pack(side="left", padx=4)
 
-    # ── STATUS BAR ───────────────────────────────────
+    # ── STATUS BAR ──────────────────────────────────
     def _build_statusbar(self):
-        self.status_var = tk.StringVar(value="● Motor de análisis activo  |  Versión 1.0.4 - Dart Stable")
+        self.status_var = tk.StringVar(
+            value="● Motor de análisis activo  |  Versión 1.0.4 - Dart Stable")
         tk.Label(self.root, textvariable=self.status_var,
                  font=("Helvetica", 9), fg="#7B7487", bg="#E8E8E6",
                  anchor="w", padx=12, pady=4).pack(fill="x", side="bottom")
@@ -162,7 +165,7 @@ class AnalizadorGUI:
         ahora = datetime.now().strftime("%H:%M:%S")
         self.status_var.set(f"● {msg}  |  {ahora}")
 
-    # ── ACCIONES ─────────────────────────────────────
+    # ── ACCIONES ────────────────────────────────────
     def _limpiar(self):
         self.editor.delete("1.0", "end")
         self._write_resultado([])
@@ -199,29 +202,45 @@ class AnalizadorGUI:
     def _analizar(self):
         codigo = self.editor.get("1.0", "end").strip()
         if not codigo:
-            messagebox.showwarning("Sin código", "Escribe o carga un archivo .dart primero.")
+            messagebox.showwarning("Sin código",
+                                   "Escribe o carga un archivo .dart primero.")
             return
 
         tab = self.tab_var.get()
         lineas = []
         total_errores = 0
-        total_principal = 0  # tokens, estructuras o variables según pestaña
+        total_principal = 0
 
         # ── ANÁLISIS LÉXICO ──────────────────────────
         if tab in ("Léxico", "Todos"):
             lineas.append(("titulo", "═══ ANÁLISIS LÉXICO ═══\n"))
             try:
-                from lexer.lexer import lexer
+                from lexer.lexer import lexer, errores_lexicos
+                errores_lexicos.clear()
                 lexer.lineno = 1
                 lexer.input(codigo)
                 toks = list(lexer)
 
                 total_principal += len(toks)
-                lineas.append(("info", f"Tokens encontrados: {len(toks)}\n\n"))
+                lineas.append(("info", f"Tokens encontrados: {len(toks)}\n"))
+                lineas.append((
+                    "error" if errores_lexicos else "ok",
+                    f"Errores léxicos: {len(errores_lexicos)}\n\n"
+                ))
+
                 for tok in toks:
-                    lineas.append(("ok", f"[Línea {tok.lineno}] {tok.type:20} → {tok.value}\n"))
-                if not toks:
+                    lineas.append(("ok",
+                        f"[Línea {tok.lineno}] {tok.type:20} → {tok.value}\n"))
+
+                if errores_lexicos:
+                    lineas.append(("titulo", "\nERRORES LÉXICOS:\n"))
+                    for err in errores_lexicos:
+                        total_errores += 1
+                        lineas.append(("error", f"  ✗ {err}\n"))
+
+                if not toks and not errores_lexicos:
                     lineas.append(("error", "No se encontraron tokens.\n"))
+
             except Exception as e:
                 lineas.append(("error", f"Error en análisis léxico: {e}\n"))
                 total_errores += 1
@@ -241,10 +260,11 @@ class AnalizadorGUI:
                     sys.stdout = old_stdout
 
                 salida = buffer.getvalue()
-                errores_sint   = [l for l in salida.splitlines() if "Error" in l]
-                aprobados_sint = [l for l in salida.splitlines() if "Error" not in l and l.strip()]
+                errores_sint   = [l for l in salida.splitlines()
+                                  if "Error" in l]
+                aprobados_sint = [l for l in salida.splitlines()
+                                  if "Error" not in l and l.strip()]
 
-                # En sintáctico: tarjeta 1 = estructuras reconocidas
                 if tab == "Sintáctico":
                     total_principal += len(aprobados_sint)
                 total_errores += len(errores_sint)
@@ -254,9 +274,12 @@ class AnalizadorGUI:
                 for l in errores_sint:
                     lineas.append(("error", f"✗ {l}\n"))
                 if not salida.strip():
-                    lineas.append(("error", "No se reconoció ninguna estructura.\n"))
+                    lineas.append(("error",
+                                   "No se reconoció ninguna estructura.\n"))
+
             except Exception as e:
-                lineas.append(("error", f"Error en análisis sintáctico: {e}\n"))
+                lineas.append(("error",
+                               f"Error en análisis sintáctico: {e}\n"))
                 total_errores += 1
             lineas.append(("info", "\n"))
 
@@ -275,23 +298,26 @@ class AnalizadorGUI:
                 vars_analizadas = len(sa.aprobados) + len(sa.errores)
                 total_errores  += len(sa.errores)
 
-                # En semántico: tarjeta 1 = variables analizadas
                 if tab == "Semántico":
                     total_principal += vars_analizadas
                 elif tab == "Todos":
                     total_principal += len(sa.aprobados)
 
-                lineas.append(("info", f"Variables analizadas: {vars_analizadas}\n\n"))
+                lineas.append(("info",
+                               f"Variables analizadas: {vars_analizadas}\n\n"))
                 for num, msg in sa.aprobados:
                     lineas.append(("ok",    f"[Línea {num}] ✓ {msg}\n"))
                 for num, msg in sa.errores:
                     lineas.append(("error", f"[Línea {num}] ✗ {msg}\n"))
                 if not sa.aprobados and not sa.errores:
-                    lineas.append(("info", "No se encontraron declaraciones para analizar.\n"))
+                    lineas.append(("info",
+                        "No se encontraron declaraciones para analizar.\n"))
 
                 os.remove(ruta_temp)
+
             except Exception as e:
-                lineas.append(("error", f"Error en análisis semántico: {e}\n"))
+                lineas.append(("error",
+                               f"Error en análisis semántico: {e}\n"))
                 total_errores += 1
 
         # ── ACTUALIZAR UI ────────────────────────────
@@ -304,7 +330,8 @@ class AnalizadorGUI:
             self._update_status("Análisis completado sin errores")
         else:
             self.stat_estado.config(text="Con errores ✗", fg="#A43073")
-            self._update_status(f"Análisis completado — {total_errores} error(es) encontrado(s)")
+            self._update_status(
+                f"Análisis completado — {total_errores} error(es) encontrado(s)")
 
     def _write_resultado(self, lineas):
         self.resultado.config(state="normal")
