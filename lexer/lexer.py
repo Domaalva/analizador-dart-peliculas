@@ -228,7 +228,7 @@ palabras_reservadas = {
     **palabras_reservadas_enrique
 }
 
-lexer = lex.lex()
+lexer = lex.lex(errorlog=lex.NullLogger())
 
 def analizar_archivo(ruta_archivo, nombre_desarrollador):
     with open(ruta_archivo, 'r', encoding='utf-8') as f:
