@@ -269,4 +269,4 @@ def analizar_archivo(ruta_archivo, nombre_desarrollador):
 
 
 if __name__ == '__main__':
-    analizar_archivo('algoritmos/algoritmo_dome.dart', 'DomenikaArboleda')
+    analizar_archivo('algoritmos/algoritmo_lexico_prueba.dart', 'DomenikaArboleda')
