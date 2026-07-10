@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 
 # ==========================================
-# INTERFAZ GRÁFICA - Domenika Arboleda
+# INTERFAZ GRÁFICA - Domenika Arboleda - Enrique Rosado - Henry Olvera
 # Analizador Dart — Plataforma de Películas
 # ==========================================
 
@@ -31,23 +31,65 @@ class AnalizadorGUI:
 
         tk.Label(header, text="Analizador Dart", font=("Helvetica", 16, "bold"),
                  fg="#630ED4", bg="#FFFFFF").pack(side="left", padx=20)
-        tk.Label(header, text="Plataforma de Películas", font=("Helvetica", 11),
-                 fg="#7B7487", bg="#FFFFFF").pack(side="left")
+        self.subtitulo_var = tk.StringVar(value="Plataforma de Películas")
 
+        tk.Label( header, textvariable=self.subtitulo_var, font=("Helvetica", 11),
+            fg="#7B7487", bg="#FFFFFF" ).pack(side="left")
+        
+        # Tabs
         # Tabs
         tab_frame = tk.Frame(header, bg="#FFFFFF")
         tab_frame.pack(side="right", padx=20)
-        self.tab_var = tk.StringVar(value="Todos")
+
+        self.tab_var = tk.StringVar(value="Léxico")
+        self.tab_buttons = {}
+
         for tab in ["Léxico", "Sintáctico", "Semántico", "Todos"]:
-            btn = tk.Button(tab_frame, text=tab,
-                           command=lambda t=tab: self._set_tab(t),
-                           font=("Helvetica", 10), relief="flat",
-                           bg="#FFFFFF", fg="#4A4455", padx=10)
+            btn = tk.Button(
+                tab_frame,
+                text=tab,
+                command=lambda t=tab: self._set_tab(t),
+                font=("Helvetica", 10),
+                relief="solid",
+                bd=1,
+                padx=12,
+                pady=5,
+                bg="#FFFFFF",
+                fg="#4A4455",
+                activebackground="#EDE9FE",
+                activeforeground="#630ED4",
+                cursor="hand2"
+            )
             btn.pack(side="left", padx=4)
+
+            self.tab_buttons[tab] = btn
+
+        # Mostrar Léxico seleccionado al iniciar
+        self._actualizar_tabs()
 
     def _set_tab(self, tab):
         self.tab_var.set(tab)
+        self._actualizar_tabs()
         self._update_status(f"Vista: {tab}")
+
+    def _actualizar_tabs(self):
+        for nombre, boton in self.tab_buttons.items():
+            if nombre == self.tab_var.get():
+                boton.config(
+                    bg="#EDE9FE",      # fondo morado claro
+                    fg="#630ED4",      # texto morado
+                    relief="solid",
+                    bd=2,
+                    highlightbackground="#630ED4"
+                )
+            else:
+                boton.config(
+                    bg="#FFFFFF",
+                    fg="#4A4455",
+                    relief="solid",
+                    bd=1,
+                    highlightbackground="#D1D5DB"
+                )
 
     # ── STATS ────────────────────────────────────────
     def _build_stats(self):
@@ -155,6 +197,8 @@ class AnalizadorGUI:
                 contenido = f.read()
             self.editor.delete("1.0", "end")
             self.editor.insert("1.0", contenido)
+            nombre = os.path.basename(path)
+            self.subtitulo_var.set(f"Plataforma de Películas — {nombre}")
             self._update_status(f"Archivo cargado: {os.path.basename(path)}")
 
     def _exportar(self):
