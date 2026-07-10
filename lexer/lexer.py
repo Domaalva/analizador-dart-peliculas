@@ -178,15 +178,13 @@ def t_newline(t):
 t_ignore = ' \t'
 
 errores_lexicos = []
-# Manejo de errores léxicos
 def t_error(t):
     mensaje = (
         f"ERROR LÉXICO: Carácter ilegal "
         f"'{t.value[0]}' en línea {t.lineno}"
     )
-
     errores_lexicos.append(mensaje)
-
+    print(mensaje)
     t.lexer.skip(1)
 
 # AUTOR: Enrique Rosado
@@ -231,6 +229,7 @@ palabras_reservadas = {
 lexer = lex.lex(errorlog=lex.NullLogger())
 
 def analizar_archivo(ruta_archivo, nombre_desarrollador):
+    errores_lexicos.clear()   # ← agrega esta línea
     with open(ruta_archivo, 'r', encoding='utf-8') as f:
         codigo = f.read()
 
@@ -255,6 +254,15 @@ def analizar_archivo(ruta_archivo, nombre_desarrollador):
             log.write(f'[Línea {tok.lineno}] {tok.type:20} → {tok.value}\n')
         log.write('\n')
         log.write('ANÁLISIS COMPLETADO\n')
+        if errores_lexicos:
+            log.write('\nERRORES LÉXICOS:\n')
+            for err in errores_lexicos:
+                log.write(f'  {err}\n')
+        else:
+            log.write('\nSin errores léxicos.\n')
+        
+
+    
 
     print(f'\nLog generado: {nombre_log}')
     print(f'Total de tokens: {len(tokens_encontrados)}')
