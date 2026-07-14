@@ -19,11 +19,39 @@ Map<String, dynamic> peliculaValida = {
   "calificacion": 9.0
 };
 
+// Casos válidos con estructuras tipo List
+List<String> generosValidos = [
+  "Acción",
+  "Drama",
+  "Comedia"
+];
+
+// Casos válidos con estructuras tipo Set
+Set<String> generosPermitidos = {
+  "Acción",
+  "Drama",
+  "Comedia"
+};
+
 // Casos inválidos con estructuras tipo Map
 Map<String, dynamic> peliculaInvalida = {
   "titulo": "Pelicula X",
   "genero": "Gore",
   "calificacion": 15.0
+};
+
+// Casos inválidos con estructuras tipo List
+List<int> numerosInvalidos = [
+  1,
+  2.5,
+  "tres"
+];
+
+// Casos inválidos con estructuras tipo Set
+Set<int> generosInvalidos = {
+  1,
+  2,
+  "tres"
 };
 
 // Retornos válidos

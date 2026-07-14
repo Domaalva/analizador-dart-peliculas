@@ -29,8 +29,12 @@ class SemanticAnalyzer:
 
     def tipo_literal(self, texto):
         texto = texto.strip()
+
+        if self._es_expresion_parentesis(texto):
+            return self.tipo_literal(texto[1:-1])
+
         # string entre comillas
-        if re.match(r'^\".*\"$|^\'.*\'$'.replace("'","'"), texto):
+        if re.match(r'^".*"$|^".*"$'.replace("'","'"), texto):
             return 'String'
         if re.match(r"^'.*'$", texto):
             return 'String'
@@ -40,12 +44,64 @@ class SemanticAnalyzer:
             return 'double'
         if texto in ('true', 'false'):
             return 'bool'
+
+        # operaciones aritméticas y concatenación
+        tipo_binaria = self._tipo_operacion_binaria(texto)
+        if tipo_binaria:
+            return tipo_binaria
+
         # identificador
         if re.match(r'^[A-Za-z_]\w*$', texto):
             sym = self.symbols.get(texto)
             if sym:
                 return sym.tipo
             else:
+                return None
+        return None
+
+    def _es_expresion_parentesis(self, texto):
+        if texto.startswith('(') and texto.endswith(')'):
+            profundidad = 0
+            for i, c in enumerate(texto):
+                if c == '(':
+                    profundidad += 1
+                elif c == ')':
+                    profundidad -= 1
+                    if profundidad == 0 and i != len(texto) - 1:
+                        return False
+            return profundidad == 0
+        return False
+
+    def _split_top_level(self, texto, operadores):
+        profundidad = 0
+        for i, c in enumerate(texto):
+            if c == '(':
+                profundidad += 1
+            elif c == ')':
+                profundidad -= 1
+            elif profundidad == 0 and c in operadores:
+                return i, c
+        return None, None
+
+    def _tipo_operacion_binaria(self, texto):
+        texto = texto.strip()
+        if texto.startswith('(') and texto.endswith(')') and self._es_expresion_parentesis(texto):
+            return self._tipo_operacion_binaria(texto[1:-1])
+
+        for ops in ['+-', '*/']:
+            indice, operador = self._split_top_level(texto, ops)
+            if indice is not None:
+                izquierda = texto[:indice].strip()
+                derecha = texto[indice + 1:].strip()
+                tipo_izq = self.tipo_literal(izquierda)
+                tipo_der = self.tipo_literal(derecha)
+                if tipo_izq is None or tipo_der is None:
+                    return None
+                if operador == '+' and tipo_izq == 'String' and tipo_der == 'String':
+                    return 'String'
+                tipos_numericos = {'int', 'double'}
+                if tipo_izq in tipos_numericos and tipo_der in tipos_numericos:
+                    return 'double' if 'double' in (tipo_izq, tipo_der) else 'int'
                 return None
         return None
 
@@ -189,7 +245,11 @@ class SemanticAnalyzerDome:
 
     def inferir_tipo(self, expr):
         expr = expr.strip()
-        if re.match(r'^\".*\"$', expr) or re.match(r"^'.*'$", expr):
+
+        if self._es_expresion_parentesis(expr):
+            return self.inferir_tipo(expr[1:-1])
+
+        if re.match(r'^".*"$', expr) or re.match(r"^'.*'$", expr):
             return 'String'
         if re.match(r'^-?\d+$', expr):
             return 'int'
@@ -197,10 +257,61 @@ class SemanticAnalyzerDome:
             return 'double'
         if expr in ('true', 'false'):
             return 'bool'
+
+        tipo_binaria = self._tipo_operacion_binaria(expr)
+        if tipo_binaria:
+            return tipo_binaria
+
         if re.match(r'^[A-Za-z_]\w*$', expr):
             sym = self.tabla_simbolos.get(expr)
             if sym:
                 return sym['tipo']
+        return None
+
+    def _es_expresion_parentesis(self, texto):
+        if texto.startswith('(') and texto.endswith(')'):
+            profundidad = 0
+            for i, c in enumerate(texto):
+                if c == '(':
+                    profundidad += 1
+                elif c == ')':
+                    profundidad -= 1
+                    if profundidad == 0 and i != len(texto) - 1:
+                        return False
+            return profundidad == 0
+        return False
+
+    def _split_top_level(self, texto, operadores):
+        profundidad = 0
+        for i, c in enumerate(texto):
+            if c == '(':
+                profundidad += 1
+            elif c == ')':
+                profundidad -= 1
+            elif profundidad == 0 and c in operadores:
+                return i, c
+        return None, None
+
+    def _tipo_operacion_binaria(self, texto):
+        texto = texto.strip()
+        if texto.startswith('(') and texto.endswith(')') and self._es_expresion_parentesis(texto):
+            return self._tipo_operacion_binaria(texto[1:-1])
+
+        for ops in ['+-', '*/']:
+            indice, operador = self._split_top_level(texto, ops)
+            if indice is not None:
+                izquierda = texto[:indice].strip()
+                derecha = texto[indice + 1:].strip()
+                tipo_izq = self.inferir_tipo(izquierda)
+                tipo_der = self.inferir_tipo(derecha)
+                if tipo_izq is None or tipo_der is None:
+                    return None
+                if operador == '+' and tipo_izq == 'String' and tipo_der == 'String':
+                    return 'String'
+                tipos_numericos = {'int', 'double'}
+                if tipo_izq in tipos_numericos and tipo_der in tipos_numericos:
+                    return 'double' if 'double' in (tipo_izq, tipo_der) else 'int'
+                return None
         return None
 
     def verificar_operacion(self, expr, num):
@@ -415,6 +526,9 @@ class SemanticAnalyzerEnrique:
     def inferir_tipo(self, expr):
         expr = expr.strip().rstrip(",")
 
+        if self._es_expresion_parentesis(expr):
+            return self.inferir_tipo(expr[1:-1])
+
         if re.match(r'^".*"$', expr) or re.match(r"^'.*'$", expr):
             return "String"
 
@@ -427,12 +541,161 @@ class SemanticAnalyzerEnrique:
         if expr in ("true", "false"):
             return "bool"
 
+        tipo_compuesto = self._inferir_tipo_compuesto(expr)
+        if tipo_compuesto:
+            return tipo_compuesto
+
+        tipo_binaria = self._tipo_operacion_binaria(expr)
+        if tipo_binaria:
+            return tipo_binaria
+
         if re.match(r"^[A-Za-z_]\w*$", expr):
             return self.simbolos.get(expr)
 
         return None
 
-    def registrar_declaracion_simple(self, linea):
+    def _split_top_level_commas(self, texto):
+        profundidad = 0
+        en_simple = False
+        en_doble = False
+        partes = []
+        inicio = 0
+
+        for i, c in enumerate(texto):
+            if c == '"' and not en_simple:
+                en_doble = not en_doble
+            elif c == "'" and not en_doble:
+                en_simple = not en_simple
+            elif not en_simple and not en_doble:
+                if c == '(':
+                    profundidad += 1
+                elif c == ')':
+                    profundidad -= 1
+                elif c == ',' and profundidad == 0:
+                    partes.append(texto[inicio:i])
+                    inicio = i + 1
+
+        partes.append(texto[inicio:])
+        return partes
+
+    def _es_literal_map(self, expr):
+        contenido = expr[1:-1].strip()
+        if not contenido:
+            return True
+
+        for item in self._split_top_level_commas(contenido):
+            if ':' not in item:
+                return False
+        return True
+
+    def _obtener_tipo_lista(self, expr):
+        contenido = expr[1:-1].strip()
+        if not contenido:
+            return "List<dynamic>"
+
+        elementos = [e.strip() for e in self._split_top_level_commas(contenido)]
+        tipos = [self.inferir_tipo(e) for e in elementos]
+        if any(t is None for t in tipos):
+            return None
+        if all(t == tipos[0] for t in tipos):
+            return f"List<{tipos[0]}>"
+        return "List<dynamic>"
+
+    def _obtener_tipo_set(self, expr):
+        contenido = expr[1:-1].strip()
+        if not contenido:
+            return "Set<dynamic>"
+
+        elementos = [e.strip() for e in self._split_top_level_commas(contenido)]
+        tipos = [self.inferir_tipo(e) for e in elementos]
+        if any(t is None for t in tipos):
+            return None
+        if all(t == tipos[0] for t in tipos):
+            return f"Set<{tipos[0]}>"
+        return "Set<dynamic>"
+
+    def _obtener_tipo_map(self, expr):
+        contenido = expr[1:-1].strip()
+        if not contenido:
+            return "Map<dynamic,dynamic>"
+
+        items = [item.strip() for item in self._split_top_level_commas(contenido)]
+        claves = []
+        valores = []
+        for item in items:
+            if ':' not in item:
+                return None
+            key, val = item.split(':', 1)
+            claves.append(self.inferir_tipo(key.strip()))
+            valores.append(self.inferir_tipo(val.strip()))
+
+        key_tipo = claves[0] if all(k == claves[0] for k in claves) else "dynamic"
+        val_tipo = valores[0] if all(v == valores[0] for v in valores) else "dynamic"
+        if key_tipo is None:
+            key_tipo = "dynamic"
+        if val_tipo is None:
+            val_tipo = "dynamic"
+
+        return f"Map<{key_tipo},{val_tipo}>"
+
+    def _inferir_tipo_compuesto(self, expr):
+        if expr.startswith('[') and expr.endswith(']'):
+            return self._obtener_tipo_lista(expr)
+        if expr.startswith('{') and expr.endswith('}'):
+            if self._es_literal_map(expr):
+                return self._obtener_tipo_map(expr)
+            return self._obtener_tipo_set(expr)
+        return None
+
+    def _es_expresion_parentesis(self, texto):
+        if texto.startswith('(') and texto.endswith(')'):
+            profundidad = 0
+            for i, c in enumerate(texto):
+                if c == '(':
+                    profundidad += 1
+                elif c == ')':
+                    profundidad -= 1
+                    if profundidad == 0 and i != len(texto) - 1:
+                        return False
+            return profundidad == 0
+        return False
+
+    def _split_top_level(self, texto, operadores):
+        profundidad = 0
+        for i, c in enumerate(texto):
+            if c == '(':
+                profundidad += 1
+            elif c == ')':
+                profundidad -= 1
+            elif profundidad == 0 and c in operadores:
+                return i, c
+        return None, None
+
+    def _tipo_operacion_binaria(self, texto):
+        texto = texto.strip()
+        if texto.startswith('(') and texto.endswith(')') and self._es_expresion_parentesis(texto):
+            return self._tipo_operacion_binaria(texto[1:-1])
+
+        for ops in ['+-', '*/']:
+            indice, operador = self._split_top_level(texto, ops)
+            if indice is not None:
+                izquierda = texto[:indice].strip()
+                derecha = texto[indice + 1:].strip()
+                tipo_izq = self.inferir_tipo(izquierda)
+                tipo_der = self.inferir_tipo(derecha)
+                if tipo_izq is None or tipo_der is None:
+                    return None
+                if operador == '+' and tipo_izq == 'String' and tipo_der == 'String':
+                    return 'String'
+                tipos_numericos = {'int', 'double'}
+                if tipo_izq in tipos_numericos and tipo_der in tipos_numericos:
+                    return 'double' if 'double' in (tipo_izq, tipo_der) else 'int'
+                return None
+        return None
+
+    def registrar_declaracion_simple(self, linea, num=None):
+        linea = linea.strip()
+
         m = re.match(
             r"^(?:const\s+|final\s+)?(int|double|String|bool)\s+([A-Za-z_]\w*)\s*=\s*(.+);$",
             linea
@@ -445,6 +708,92 @@ class SemanticAnalyzerEnrique:
             self.simbolos[nombre] = tipo
             return tipo, nombre, expr
 
+        m = re.match(
+            r"^(?:const\s+|final\s+)?Map\s*<\s*([A-Za-z_]\w*)\s*,\s*([A-Za-z_]\w*)\s*>\s+([A-Za-z_]\w*)\s*=\s*\{\s*$",
+            linea
+        )
+
+        if m:
+            tipo_clave = m.group(1)
+            tipo_valor = m.group(2)
+            nombre = m.group(3)
+            tipo = f"Map<{tipo_clave},{tipo_valor}>"
+            self.simbolos[nombre] = tipo
+            if num is not None:
+                self.aprobados.append((num, f"Estructura de datos Map reconocida: {tipo} {nombre}"))
+            return tipo, nombre, "{"
+
+        m = re.match(
+            r"^(?:const\s+|final\s+)?Map\s*<\s*([A-Za-z_]\w*)\s*,\s*([A-Za-z_]\w*)\s*>\s+([A-Za-z_]\w*)\s*=\s*(\{.*\})\s*;$",
+            linea
+        )
+
+        if m:
+            tipo_clave = m.group(1)
+            tipo_valor = m.group(2)
+            nombre = m.group(3)
+            tipo = f"Map<{tipo_clave},{tipo_valor}>"
+            self.simbolos[nombre] = tipo
+            if num is not None:
+                self.aprobados.append((num, f"Estructura de datos Map reconocida: {tipo} {nombre}"))
+            return tipo, nombre, m.group(4).strip()
+
+        m = re.match(
+            r"^(?:const\s+|final\s+)?List\s*<\s*([A-Za-z_]\w*)\s*>\s+([A-Za-z_]\w*)\s*=\s*\[\s*$",
+            linea
+        )
+
+        if m:
+            tipo_elemento = m.group(1)
+            nombre = m.group(2)
+            tipo = f"List<{tipo_elemento}>"
+            self.simbolos[nombre] = tipo
+            if num is not None:
+                self.aprobados.append((num, f"Estructura de datos List reconocida: {tipo} {nombre}"))
+            return tipo, nombre, "["
+
+        m = re.match(
+            r"^(?:const\s+|final\s+)?List\s*<\s*([A-Za-z_]\w*)\s*>\s+([A-Za-z_]\w*)\s*=\s*(\[.*\])\s*;$",
+            linea
+        )
+
+        if m:
+            tipo_elemento = m.group(1)
+            nombre = m.group(2)
+            tipo = f"List<{tipo_elemento}>"
+            self.simbolos[nombre] = tipo
+            if num is not None:
+                self.aprobados.append((num, f"Estructura de datos List reconocida: {tipo} {nombre}"))
+            return tipo, nombre, m.group(3).strip()
+
+        m = re.match(
+            r"^(?:const\s+|final\s+)?Set\s*<\s*([A-Za-z_]\w*)\s*>\s+([A-Za-z_]\w*)\s*=\s*\{\s*$",
+            linea
+        )
+
+        if m:
+            tipo_elemento = m.group(1)
+            nombre = m.group(2)
+            tipo = f"Set<{tipo_elemento}>"
+            self.simbolos[nombre] = tipo
+            if num is not None:
+                self.aprobados.append((num, f"Estructura de datos Set reconocida: {tipo} {nombre}"))
+            return tipo, nombre, "{"
+
+        m = re.match(
+            r"^(?:const\s+|final\s+)?Set\s*<\s*([A-Za-z_]\w*)\s*>\s+([A-Za-z_]\w*)\s*=\s*(\{.*\})\s*;$",
+            linea
+        )
+
+        if m:
+            tipo_elemento = m.group(1)
+            nombre = m.group(2)
+            tipo = f"Set<{tipo_elemento}>"
+            self.simbolos[nombre] = tipo
+            if num is not None:
+                self.aprobados.append((num, f"Estructura de datos Set reconocida: {tipo} {nombre}"))
+            return tipo, nombre, m.group(3).strip()
+
         m = re.match(r"^var\s+([A-Za-z_]\w*)\s*=\s*(.+);$", linea)
 
         if m:
@@ -454,6 +803,10 @@ class SemanticAnalyzerEnrique:
 
             if tipo:
                 self.simbolos[nombre] = tipo
+                if num is not None:
+                    self.aprobados.append((num, f"Declaración var: {nombre} = {expr} (tipo detectado: {tipo})"))
+            else:
+                self.aprobados.append((num, f"Declaración var: {nombre} = {expr} (tipo indeterminado)"))
 
             return tipo, nombre, expr
 
@@ -586,7 +939,7 @@ class SemanticAnalyzerEnrique:
             if not linea:
                 continue
 
-            self.registrar_declaracion_simple(linea)
+            self.registrar_declaracion_simple(linea, num)
             self.validar_rango_calificacion(linea, num)
             self.validar_genero(linea, num)
 

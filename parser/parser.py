@@ -37,6 +37,11 @@ def p_elementos(p):
 def p_elemento(p):
     '''
     elemento : sentencia_print
+             | sentencia_if
+             | sentencia_control
+             | sentencia_incremento
+             | sentencia_asignacion
+             | sentencia_return
              | funcion_void
              | funcion_return
              | declaracion_variable
@@ -59,6 +64,50 @@ def p_sentencia_print(p):
     sentencia_print : PRINT PARENTESIS_IZQ expresion_general PARENTESIS_DER PUNTOYCOMA
     '''
     print(f"Print reconocido: {p[3]}")
+
+
+def p_sentencia_if(p):
+    '''
+    sentencia_if : IF PARENTESIS_IZQ expresion_booleana PARENTESIS_DER bloque_no_vacio else_opcional
+    '''
+    print("If reconocido")
+
+
+def p_else_opcional(p):
+    '''
+    else_opcional :
+                  | ELSE bloque_no_vacio
+    '''
+    pass
+
+
+def p_bloque_no_vacio(p):
+    '''
+    bloque_no_vacio : LLAVE_IZQ elementos LLAVE_DER
+    '''
+    pass
+
+
+def p_sentencia_control(p):
+    '''
+    sentencia_control : BREAK PUNTOYCOMA
+                      | CONTINUE PUNTOYCOMA
+    '''
+    print(f"Sentencia de control reconocida: {p[1]}")
+
+
+def p_sentencia_incremento(p):
+    '''
+    sentencia_incremento : incremento PUNTOYCOMA
+    '''
+    print("Incremento/decremento reconocido")
+
+
+def p_sentencia_asignacion(p):
+    '''
+    sentencia_asignacion : IDENTIFICADOR ASIGNACION expresion_general PUNTOYCOMA
+    '''
+    print(f"Asignación reconocida: {p[1]} = {p[3]}")
 
 
 def p_funcion_void(p):
@@ -84,7 +133,7 @@ def p_bloque_return(p):
 
 def p_sentencia_return(p):
     '''
-    sentencia_return : RETURN CADENA PUNTOYCOMA
+    sentencia_return : RETURN expresion_general PUNTOYCOMA
     '''
     print(f"Return reconocido: {p[2]}")
 
@@ -107,11 +156,17 @@ def p_expresion_booleana(p):
                         | expresion MENOR_IGUAL expresion
                         | TRUE
                         | FALSE
+                        | NOT expresion_booleana
+                        | PARENTESIS_IZQ expresion_booleana PARENTESIS_DER
                         | expresion_booleana AND expresion_booleana
                         | expresion_booleana OR expresion_booleana
     '''
     if len(p) == 2:
         p[0] = p[1]
+    elif len(p) == 3 and p[1] == '!':
+        p[0] = ('not', p[2])
+    elif len(p) == 4 and p[1] == '(':
+        p[0] = p[2]
     elif len(p) == 4 and p[2] in ('&&', '||'):
         p[0] = ('logic', p[2], p[1], p[3])
     elif len(p) == 4:
@@ -155,6 +210,14 @@ def p_factor_primary(p):
         p[0] = p[1]
     else:
         p[0] = p[2]
+
+
+def p_factor_booleano(p):
+    '''
+    factor : TRUE
+           | FALSE
+    '''
+    p[0] = p[1]
 
 
 def p_factor_call(p):
@@ -324,6 +387,7 @@ def p_tipo(p):
          | DOUBLE_TYPE
          | STRING_TYPE
          | BOOL_TYPE
+         | IDENTIFICADOR
     '''
     p[0] = p[1]
 
@@ -382,18 +446,39 @@ def p_caso(p):
 
 def p_caso_default(p):
     '''
-    caso_default : DEFAULT DOS_PUNTOS sentencia_print
+    caso_default : DEFAULT DOS_PUNTOS lista_sentencias
     '''
     print("Default reconocido")
+
+
+def p_lista_sentencias(p):
+    '''
+    lista_sentencias : sentencia_print
+                    | sentencia_control
+                    | sentencia_incremento
+                    | sentencia_asignacion
+                    | lista_sentencias sentencia_print
+                    | lista_sentencias sentencia_control
+                    | lista_sentencias sentencia_incremento
+                    | lista_sentencias sentencia_asignacion
+    '''
+    pass
 
 # -------------------------
 # 3. ESTRUCTURA DE DATOS: MAP
 # -------------------------
 def p_declaracion_map(p):
     '''
-    declaracion_map : IDENTIFICADOR MENOR tipo COMA IDENTIFICADOR MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares LLAVE_DER PUNTOYCOMA
+    declaracion_map : IDENTIFICADOR MENOR tipo COMA tipo MAYOR IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_pares_opt LLAVE_DER PUNTOYCOMA
     '''
-    print(f"Map reconocido: {p[7]}")
+    print(f"Estructura de datos Map reconocida: {p[7]}")
+
+def p_lista_pares_opt(p):
+    '''
+    lista_pares_opt :
+                    | lista_pares
+    '''
+    pass
 
 def p_lista_pares(p):
     '''
